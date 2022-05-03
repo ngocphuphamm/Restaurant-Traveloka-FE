@@ -14,13 +14,14 @@ import Menu from "./feature/Menu/menuFood";
 import Cart from "./components/cart/cart";
 import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
+import Layout from './layout/layout';
 function App() {
   return (
 
     <>
       <Routes>
 
-        <Route path='/' element={<Home />}>
+        <Route path='/' element={<Layout />}>
           <Route path='' element={<Product />} />
           <Route path=':productId' element={<ProductDetails />} />
           <Route path='id/:abc' element={<Menu />}></Route>
