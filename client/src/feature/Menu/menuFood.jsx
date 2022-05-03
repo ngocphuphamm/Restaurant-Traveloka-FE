@@ -3,11 +3,11 @@ import foodtApi from "../../api/food"
 import{ useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { AddToCart, SetMsg } from '../../redux/Cart/cart-action';
+import { AddToCart } from '../../redux/Cart/cart-action';
 import globalStateAndAction from '../../container/global.state';
 
 
-function Menu({cart}) {
+function Menu({cart,SetMsg}) {
     
     const {abc} = useParams() 
     const dispatch = useDispatch();
@@ -30,11 +30,11 @@ function Menu({cart}) {
     };  
 
     useEffect(() =>{
-        if(cart.msg !== "")
+        if(cart.msg === true)
         {
-
-            alert("Vui lòng thêm giỏ hàng đúng với nhà hàng")
-      
+            SetMsg();
+            alert("Vui lòng thêm giỏ hàng đúng với nhà hàng");
+            
           
         }
     },[cart.msg])
@@ -42,6 +42,7 @@ function Menu({cart}) {
 
     
     const handleClicKAddToCart = (payload)=>{
+       
         dispatch(AddToCart(payload));
     }
     const renderMenu = () => {

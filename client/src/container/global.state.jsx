@@ -13,6 +13,7 @@ export default function globalStateAndAction(name) {
 	const mapActionToProps = (dispatch) => ({
 	
         numberCart : ()=> dispatch(GetNumberCart()),
+		SetMsg : ()=>dispatch(SetMsg(),)
 	
 	});
 	return connect(mapStateToProps, mapActionToProps)(name);
