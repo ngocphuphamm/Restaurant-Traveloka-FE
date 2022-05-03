@@ -32,9 +32,10 @@ const Product = () => {
         try{
           const a = await restaurantApi.getAllRestarant();
           setlistrender(a.data);
+          console.log(listrender);
         }
         catch{
-          alert("loi api Pruduct")
+          alert("loi getall restaurant")
         }
     }
     
