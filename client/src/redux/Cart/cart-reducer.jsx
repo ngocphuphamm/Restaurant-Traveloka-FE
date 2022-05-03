@@ -1,0 +1,65 @@
+import { ADD_TO_CART,GET_ALL_FOOD_REDUX ,GET_NUMBER_CART,SET_MSG} from "./cart-type"; 
+
+
+/* * numberCart: dùng lưu số lượng sản phẩm đã mua có trong giỏ hàng(Carts)
+* Carts:[] : tạo mảng giỏ hàng đầu tiền là rỗng
+* _products:[] dùng chứa tất cả sản phầm lấy được từ API */
+
+let INTIAL_STATE = { 
+    numberCart:0,
+    Carts:[],
+    foods:[],
+    idRestaurant :"",
+    msg : ""
+}
+
+const cartReducer = (state = INTIAL_STATE,action)=>{
+    switch(action.type){
+        case GET_ALL_FOOD_REDUX : 
+            return {
+                ...state , 
+                _foods:action.payload
+            }
+        case GET_NUMBER_CART : 
+            return  {
+                ...state,
+            }
+        case ADD_TO_CART : 
+            if(state.numberCart == 0  )
+            {
+                let cart =  {
+                    idFood : action.payload.idFood ,
+                    idRestaurant : action.payload.idRestaurant,
+                    quantity : 1  , 
+                    nameFood : action.payload.nameFood,
+                    priceFood : action.payload.priceFood,
+                 };
+                 state.idRestaurant = action.payload.idRestaurant;
+          
+                 state.Carts.push(cart);
+                 console.log(state.Carts);
+                 state.numberCart +=1; 
+            }
+            else 
+            {
+              if(state.idRestaurant !== action.payload.idRestaurant)
+                {
+                    state.msg = "Chọn thức ăn phải trùng với thức ăn của nhà hàng trước đó  ";
+                }
+            }
+  
+         
+        // case SET_MSG :
+        //       return {
+        //           ...state , 
+        //           msg : ""
+        //       }
+
+        default:
+                return state;
+    
+    }
+}
+
+export default cartReducer;
+
