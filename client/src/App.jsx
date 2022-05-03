@@ -11,22 +11,24 @@ import Home from "./feature/Home/home";
 import Product from "./feature/Product/product";
 import ProductDetails from "./feature/Product/productDetail";
 import Menu from "./feature/Menu/menuFood";
-import Cart from "./components/cart/cart";
+
 import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
+import Layout from './layout/layout';
+import PageCart from './feature/PageCart/pageCart';
 function App() {
   return (
 
     <>
       <Routes>
 
-        <Route path='/' element={<Home />}>
+        <Route path='/' element={<Layout />}>
           <Route path='' element={<Product />} />
           <Route path=':productId' element={<ProductDetails />} />
           <Route path='id/:abc' element={<Menu />}></Route>
         </Route>
-        {/* <Route path='/cart' element={<Cart />}></Route>
-        <Route path='/login' element={<Login />}></Route>
+        <Route path='/cart' element={<PageCart />}></Route>
+        {/* <Route path='/login' element={<Login />}></Route>
         <Route path='/app' element={<App />}>
           <Route path='*' element={<Page_404 />}></Route>
         </Route> */}

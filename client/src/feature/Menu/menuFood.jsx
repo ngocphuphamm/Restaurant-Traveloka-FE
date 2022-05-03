@@ -1,17 +1,16 @@
 import React from 'react'
 import foodtApi from "../../api/food"
 import{ useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import { useSelector, useDispatch } from "react-redux";
-// import { addPost, addTodo, getListTodo, sortPost } from "./CartSlide";
+import { AddToCart } from '../../redux/Cart/cart-action';
+import globalStateAndAction from '../../container/global.state';
 
 
-
-
-function Menu() {
-
+function Menu({cart,SetMsg}) {
+    
     const {abc} = useParams() 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [menu, setMenu] = useState([]);
     // const dataPost = useSelector((state) => state?.cartSlide?.data);
 
@@ -19,6 +18,8 @@ function Menu() {
         getDataMenu();
     }, []);
 
+  
+    
      const getDataMenu =  async () => {       
         try {
           const a = await foodtApi.getMenuFood(`${abc}`);
@@ -28,6 +29,22 @@ function Menu() {
         }
     };  
 
+    useEffect(() =>{
+        if(cart.msg === true)
+        {
+            SetMsg();
+            alert("Vui lòng thêm giỏ hàng đúng với nhà hàng");
+            
+          
+        }
+    },[cart.msg])
+
+
+    
+    const handleClicKAddToCart = (payload)=>{
+       
+        dispatch(AddToCart(payload));
+    }
     const renderMenu = () => {
         if(menu){
             return menu.map((item,index)=>{
@@ -53,6 +70,7 @@ function Menu() {
                                         <a 
                                         className="btn btn-outline-dark mt-auto" 
                                         href="#"
+                                        onClick = {()=>{handleClicKAddToCart(item)}}
                                         >
                                             Thêm vào giỏ
                                         </a>
@@ -77,4 +95,4 @@ function Menu() {
 )
 }
 
-export default Menu
+export default   globalStateAndAction(Menu);
