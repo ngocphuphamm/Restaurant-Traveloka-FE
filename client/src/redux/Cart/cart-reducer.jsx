@@ -10,7 +10,7 @@ let INTIAL_STATE = {
     Carts:[],
     foods:[],
     idRestaurant :"",
-    msg : ""
+    msg :false
 }
 
 const cartReducer = (state = INTIAL_STATE,action)=>{
@@ -32,6 +32,7 @@ const cartReducer = (state = INTIAL_STATE,action)=>{
                     idRestaurant : action.payload.idRestaurant,
                     quantity : 1  , 
                     nameFood : action.payload.nameFood,
+                    imageFood : action.payload.urlImage,
                     priceFood : action.payload.priceFood,
                  };
                  state.idRestaurant = action.payload.idRestaurant;
@@ -44,16 +45,54 @@ const cartReducer = (state = INTIAL_STATE,action)=>{
             {
               if(state.idRestaurant !== action.payload.idRestaurant)
                 {
-                    state.msg = "Chọn thức ăn phải trùng với thức ăn của nhà hàng trước đó  ";
+       
+                   state.msg = true;
+                   return {
+                       ...state ,
+
+                   }
                 }
+                else
+                {
+               
+                    let check = false; 
+                    state.Carts.map((item,key)=>{
+                        if(item.idFood ==action.payload.idFood){
+                            state.Carts[key].quantity++;
+                            check=true;
+                        }
+    
+                    });
+            
+                    if(!check)
+                    {
+                        let cart =  {
+                            idFood : action.payload.idFood ,
+                            idRestaurant : action.payload.idRestaurant,
+                            quantity : 1  , 
+                            nameFood : action.payload.nameFood,
+                            imageFood : action.payload.urlImage,
+                            priceFood : action.payload.priceFood,
+                         };
+                        state.Carts.push(cart);
+                 
+                    }
+                }
+                
+                state.numberCart = state.numberCart+1
+               
             }
-  
-         
-        // case SET_MSG :
-        //       return {
-        //           ...state , 
-        //           msg : ""
-        //       }
+          
+            return{
+                ...state,
+            }
+            
+        case SET_MSG :
+            console.log("set message");
+            state.msg = false;
+            return {
+                ...state,
+            }
 
         default:
                 return state;
