@@ -28,6 +28,7 @@ export default function Home() {
         try {
             const a = await restaurantApi.getRestaurant(`${id}`);
             setlistlookfor(a.data)
+            console.log("da vao");
         }
         catch {
             console.log("loi api Index");

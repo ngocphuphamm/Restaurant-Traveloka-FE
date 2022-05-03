@@ -3,7 +3,7 @@ import restaurantApi from '../../api/restaurant';
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { Slide } from 'react-slideshow-image';
-
+import 'react-slideshow-image/dist/styles.css'
 const ProductDetails = () => {
 
     // const Timer = () => {
@@ -88,32 +88,32 @@ const ProductDetails = () => {
 
 
 
-    const addReservations = async () => {
-        try {         
-            console.log(date,time,name,tel);
-            await restaurantApi.postBookRestaurant({
-                idRestaurant:productId,
-                dateBook: date,
-                timeBook: time,
-                nameBook: name,
-                phoneBook: tel,
-          });
-          setTime("");
-          setDate("");
-          setName("");
-          setTel(0);
-        } catch (error) {
-          console.log("loi");
-        }
-      };
+    // const addReservations = async () => {
+    //     try {         
+    //         console.log(date,time,name,tel);
+    //         await restaurantApi.postBookRestaurant({
+    //             idRestaurant:productId,
+    //             dateBook: date,
+    //             timeBook: time,
+    //             nameBook: name,
+    //             phoneBook: tel,
+    //       });
+    //       setTime("");
+    //       setDate("");
+    //       setName("");
+    //       setTel(0);
+    //     } catch (error) {
+    //       console.log("loi");
+    //     }
+    //   };
 
 
 
-    useEffect(() => {
-        if (Date.parse(date)+100000000 < today.getTime()) {
-            alert("Vui lòng chọn lại ngày")
-        }
-    }, [date])
+    // useEffect(() => {
+    //     if (Date.parse(date)+100000000 < today.getTime()) {
+    //         alert("Vui lòng chọn lại ngày")
+    //     }
+    // }, [date])
 
 
 
@@ -126,6 +126,7 @@ return (
                 <div className="gx-4 gx-lg-5">
 
                     <div className="col-md-12 slide-container mb-5 ">  
+                                      
                         {listrender?.imagesRestaurants?.length > 0 ?                        
                             <Slide 
                             infinite = {true}
@@ -133,14 +134,14 @@ return (
                             slidesToScroll={1}
                             dots={true}
                             >                          
-                                {listrender.imagesRestaurants.map((item,index) => (
+                                    {listrender.imagesRestaurants.map((item,index) => (
                                     <div 
                                     key={index}
                                     >
                                         <img className="mt-10 mb-5 mb-md-0 col-md-12" src={item.urlRestaurant} alt="..." />
                                     </div>                               
                                     )
-                                )}                              
+                                )}           
                             </Slide>                                       
                         : null } 
                     </div>
@@ -246,7 +247,7 @@ return (
                                 <button 
                                 className="btn btn-outline-dark flex-shrink-0 col-md-12 mt-5" 
                                 type="button"
-                                onClick={addReservations()}
+                                // onClick={addReservations()}
                                 >
                                     <i className="bi-cart-fill me-1"></i>
                                     Đặt chỗ
