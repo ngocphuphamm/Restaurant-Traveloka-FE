@@ -11,7 +11,7 @@ import Home from "./feature/Home/home";
 import Product from "./feature/Product/product";
 import ProductDetails from "./feature/Product/productDetail";
 import Menu from "./feature/Menu/menuFood";
-import Cart from "./components/cart/cart";
+
 import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
 import Layout from './layout/layout';
