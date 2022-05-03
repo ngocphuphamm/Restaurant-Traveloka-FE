@@ -15,6 +15,7 @@ import Menu from "./feature/Menu/menuFood";
 import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
 import Layout from './layout/layout';
+import PageCart from './feature/PageCart/pageCart';
 function App() {
   return (
 
@@ -26,8 +27,8 @@ function App() {
           <Route path=':productId' element={<ProductDetails />} />
           <Route path='id/:abc' element={<Menu />}></Route>
         </Route>
-        {/* <Route path='/cart' element={<Cart />}></Route>
-        <Route path='/login' element={<Login />}></Route>
+        <Route path='/cart' element={<PageCart />}></Route>
+        {/* <Route path='/login' element={<Login />}></Route>
         <Route path='/app' element={<App />}>
           <Route path='*' element={<Page_404 />}></Route>
         </Route> */}
