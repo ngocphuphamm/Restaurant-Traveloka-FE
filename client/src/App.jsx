@@ -26,8 +26,9 @@ function App() {
           <Route path='' element={<Product />} />
           <Route path=':productId' element={<ProductDetails />} />
           <Route path='id/:abc' element={<Menu />}></Route>
+          <Route path='cart' element={<PageCart />}></Route>
         </Route>
-        <Route path='/cart' element={<PageCart />}></Route>
+       
         {/* <Route path='/login' element={<Login />}></Route>
         <Route path='/app' element={<App />}>
           <Route path='*' element={<Page_404 />}></Route>
