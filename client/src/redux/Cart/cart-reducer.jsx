@@ -34,6 +34,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                     nameFood: action.payload.nameFood,
                     imageFood: action.payload.urlImage,
                     priceFood: action.payload.priceFood,
+                    nameRestaurant: action.payload.nameRestaurant
                 };
                 state.idRestaurant = action.payload.idRestaurant;
 
@@ -69,6 +70,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                             nameFood: action.payload.nameFood,
                             imageFood: action.payload.urlImage,
                             priceFood: action.payload.priceFood,
+                            nameRestaurant: action.payload.nameRestaurant
                         };
                         state.Carts.push(cart);
 
@@ -113,10 +115,11 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 ...state,
                 numberCart: state.numberCart - quantity_,
                 Carts: state.Carts.filter(item => {
-                    return item.id != state.Carts[action.payload].id
+                    return item.idFood != state.Carts[action.payload].idFood
                 })
 
             }
+          
 
         default:
             return state;
