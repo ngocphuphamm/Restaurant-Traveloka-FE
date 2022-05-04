@@ -1,13 +1,11 @@
 import axios from "axios";
 
-export default async function axiosMethod(endpoint, method, body) {
-	const res = await axios({
-		method: method,
-		url: `${process.env.REACT_APP_API_URL}${endpoint}`,
-		data: body,
-		
-		withCredentials: true,
+export default function axiosMethod(endpoint, method , body) {
+	return axios({
+		method,
+		url: `${process.env.REACT_APP_API_URL}/${endpoint}`,
+		data: body
+	}).catch(err => {
+		console.log(err);
 	});
-	const data = res.data;
-	return data;
 }

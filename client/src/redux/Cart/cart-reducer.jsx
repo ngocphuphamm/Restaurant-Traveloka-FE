@@ -16,9 +16,10 @@ let INTIAL_STATE = {
 const cartReducer = (state = INTIAL_STATE, action) => {
     switch (action.type) {
         case GET_ALL_FOOD_REDUX:
+            console.log(action.payload);
             return {
                 ...state,
-                _foods: action.payload
+                foods: action.payload
             }
         case GET_NUMBER_CART:
             return {

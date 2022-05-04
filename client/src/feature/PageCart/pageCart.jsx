@@ -1,7 +1,9 @@
 import React from 'react'
+import globalStateAndAction from '../../container/global.state';
 
 
-function PageCart() {
+function PageCart({cart}) {
+
   return (
     <div class="container-fluid">
         <div class="row">
@@ -74,4 +76,4 @@ function PageCart() {
   )
 }
 
-export default PageCart
+export default globalStateAndAction(PageCart);

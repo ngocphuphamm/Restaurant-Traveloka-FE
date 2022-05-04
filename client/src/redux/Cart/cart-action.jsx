@@ -1,6 +1,8 @@
 
 import { GET_ALL_FOOD_REDUX, GET_NUMBER_CART, ADD_TO_CART,UPDATE_CART,DELETE_CART,INCREASE_QUANTITY,DECREASE_QUANTITY,SET_MSG} from './cart-type';
 
+
+
 export function SetMsg() {
     return {
         type : SET_MSG

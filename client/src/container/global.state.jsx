@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { GetNumberCart, SetMsg } from "../redux/Cart/cart-action";
+import { GetNumberCart, SetMsg,actFetchFoodRequest } from "../redux/Cart/cart-action";
 
 export default function globalStateAndAction(name) {
 	const mapStateToProps = (state) => {
@@ -11,9 +11,9 @@ export default function globalStateAndAction(name) {
 	};
 
 	const mapActionToProps = (dispatch) => ({
-	
+		
         numberCart : ()=> dispatch(GetNumberCart()),
-		SetMsg : ()=>dispatch(SetMsg(),)
+		SetMsg : ()=>dispatch(SetMsg()),
 	
 	});
 	return connect(mapStateToProps, mapActionToProps)(name);
