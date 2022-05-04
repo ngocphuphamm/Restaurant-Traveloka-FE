@@ -10,6 +10,7 @@ function PopupCart({cart}) {
         <div className="header-cart">
 
             <div className="header-cart-wrap">
+                
                 <i className="header__cart-icon ti-shopping-cart"></i>
                 <span className="header__cart-notice">{number}</span>
 
