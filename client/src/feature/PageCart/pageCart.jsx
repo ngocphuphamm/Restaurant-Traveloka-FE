@@ -2,10 +2,11 @@ import React from 'react'
 import globalStateAndAction from '../../container/global.state';
 
 
-function PageCart({cart}) {
+function PageCart({cart}) { 
+    console.log(cart.Carts);
 
   return (
-    <div class="container-fluid">
+    <div class="container-fluid" style = {{marginTop:"200px"}}>
         <div class="row">
             <aside class="col-lg-9">
                 <div class="card">
