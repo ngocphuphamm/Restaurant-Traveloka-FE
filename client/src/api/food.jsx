@@ -18,6 +18,7 @@ export const actFetchFoodRequest = async (id) => {
                     });
     }
 }
+console.log("abc");
 
 export default {
     getAllFood,
