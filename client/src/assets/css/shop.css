@@ -544,6 +544,7 @@
     display: inline-block;
     padding: 0px 12px;
     cursor: pointer; 
+    background-color: #757575;
 }
 
 .header__cart-icon{
@@ -632,16 +633,16 @@
 .header-search-btn{
     background-color: var(--primary-color);
     border: none;
-    height: 34px;
+    height: 38px;
     width: 60px;
     border-radius: 3px;
-    margin-right: 3px;
+    margin-left: 20px; 
     outline: none;
     display: flex;
 }
 
 .header-search-btn:hover{
-    background-color: #fb6445;
+    background-color: #fb6445 !important;
     cursor: pointer;
 }
 
@@ -1498,3 +1499,4 @@ a {
 .color_text{
     color: #fd7e14;
 }
+    
