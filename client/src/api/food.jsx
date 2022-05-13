@@ -9,6 +9,10 @@ const getMenuFood = (id) => {
     return axios.get(`/food/getAllFood/${id}`)
 };
 
+const search = (id) => {
+    return axios.get(`/food/search/${id}`)
+}
+
 export const actFetchFoodRequest = async (id) => {
     return async  (dispatch) => {
         return axiosMethod(`/food/getAllFood/${id}`,'GET',null) 
@@ -18,9 +22,9 @@ export const actFetchFoodRequest = async (id) => {
                     });
     }
 }
-console.log("abc");
 
 export default {
     getAllFood,
-    getMenuFood
+    getMenuFood,
+    search,
 };

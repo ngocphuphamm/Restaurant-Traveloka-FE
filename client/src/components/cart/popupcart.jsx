@@ -1,10 +1,43 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 import globalStateAndAction from '../../container/global.state';
 
 
 function PopupCart({cart}) {
     const number = cart.numberCart;
+
+    
+
+    const cartMini = () => {
+        if(cart.Carts){
+            return cart.Carts.map((item,index)=>{
+              return (
+                <li 
+                key={index}
+                className="header__cart-item">
+                    <img className="header__cart-img" src={item.imageFood}></img>
+                    <div className="header__cart-item-info">
+                        <div className="header__cart-item-head">
+                            <h5 className="header__cart-item-name">{item.nameFood}</h5>
+                            <div className="cach">
+                                <span className="header__cart-item-price">{item.priceFood}</span>
+                                <span className="header__cart-item-multiply"> x </span>
+                                <span className="header__cart-item-qnt">{item.quantity}</span>
+                            </div>
+                        </div>
+                        <div className="header__cart-item-body">
+                            <span className="header__cart-item-description">
+                                Mã món: {item.idFood}
+                            </span>
+                            <span className="header__cart-item-remove">Xoa</span>
+                        </div>
+                    </div>
+                </li>
+              )
+            })
+        }
+    }
 
     return (
         <div className="header-cart">
@@ -21,29 +54,14 @@ function PopupCart({cart}) {
                     <h4 className="header__cart-heading">San pham da them</h4>
                     <ul className="header__cart-list-item">
 
-                        <li className="header__cart-item">
-                            <img className="header__cart-img" src="https://cf.shopee.vn/file/0ea3a585736537879fbc6b48f5b724b9_tn"></img>
-                            <div className="header__cart-item-info">
-                                <div className="header__cart-item-head">
-                                    <h5 className="header__cart-item-name">Dong Ho RolexTay cầm gimbal DJI Osmo Mobile 4 Combo chống rung điện thoại - Hàng chính hãng - Bảo hành 12 thángTay cầm gimbal DJI Osmo Mobile 4 Combo chống rung điện thoại - Hàng chính hãng - Bảo hành 12 thángTay cầm gimbal DJI Osmo Mobile 4 Combo chống rung điện thoại - Hàng chính hãng - Bảo hành 12 thángTay cầm gimbal DJI Osmo Mobile 4 Combo chống rung điện thoại - Hàng chính hãng - Bảo hành 12 tháng</h5>
-                                    <div className="cach">
-                                        <span className="header__cart-item-price">2.000.000</span>
-                                        <span className="header__cart-item-multiply">x</span>
-                                        <span className="header__cart-item-qnt">2</span>
-                                    </div>
-                                </div>
-                                <div className="header__cart-item-body">
-                                    <span className="header__cart-item-description">
-                                        Phan Loai: Bac
-                                    </span>
-                                    <span className="header__cart-item-remove">Xoa</span>
-                                </div>
-                            </div>
-                        </li>
+                        {cartMini()}
 
                     </ul>
-
+                    <Link
+                    to={"/cart"}
+                    >
                     <button className="header__cart-view-cart btn btn--primary pading">Xem Gio Hang</button>
+                    </Link>
                 </div>
             </div>
 

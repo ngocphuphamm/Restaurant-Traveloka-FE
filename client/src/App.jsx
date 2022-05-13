@@ -16,7 +16,7 @@ import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
 import Layout from './layout/layout';
 import PageCart from './feature/PageCart/pageCart';
-import Bill from "./components/bill/bill";
+import Bill from "./feature/bill/bill";
 function App() {
   return (
 
