@@ -9,7 +9,7 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
     let TotalCart=0;
     Object.keys(cart.Carts).forEach(function(item){
  
-        TotalCart= cart.Carts[item].quantity * cart.Carts[item].priceFood;
+        TotalCart += cart.Carts[item].quantity * cart.Carts[item].priceFood;
 
     });
     function TotalPrice(price,soluong){
