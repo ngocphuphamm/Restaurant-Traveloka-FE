@@ -100,7 +100,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
         //Kiểm tra action.type==DECREASE_QUANTITY: giảm quantity-- của sản phẩm được chọn
         case DECREASE_QUANTITY:
             let quantity = state.Carts[action.payload].quantity;
-            if (quantity > 1) {
+            if (quantity > 0) {
                 state.numberCart--;
                 state.Carts[action.payload].quantity--;
             }

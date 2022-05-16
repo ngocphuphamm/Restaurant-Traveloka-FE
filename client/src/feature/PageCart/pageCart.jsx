@@ -7,9 +7,12 @@ import globalStateAndAction from '../../container/global.state';
 function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
     let ListCart = [];
     let TotalCart=0;
-    Object.keys(cart.Carts).forEach(function(item){
+    
+
+    Object.keys(cart.Carts).forEach(function(item,n){
  
-        TotalCart= cart.Carts[item].quantity * cart.Carts[item].priceFood;
+        TotalCart= (cart.Carts[item].quantity) * (cart.Carts[item].priceFood);
+        console.log((cart.Carts[item].quantity));
 
     });
     function TotalPrice(price,soluong){
@@ -34,7 +37,10 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
                         </figure>
                     </td>
                     <td> <span className="btn btn-primary" style={{ margin: '-3px' }}
-                        onClick={() => DecreaseQuantity(key)} >-</span>
+                        onClick={() => DecreaseQuantity(key)} >
+                            {/* {item.quantity > 1 ? DecreaseQuantity(key) : 5} */}
+                            -
+                            </span>
                         <span className="btn btn-info">{item.quantity}</span>
                         <span className="btn btn-primary" style={{ margin: '-3px' }}
                             onClick={() => IncreaseQuantity(key)}     >+</span> </td>

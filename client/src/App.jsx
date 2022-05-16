@@ -31,10 +31,10 @@ function App() {
         </Route>
        
        <Route path="bill" element={<Bill/>}/>
-        {/* <Route path='/login' element={<Login />}></Route>
+        <Route path='/login' element={<Login />}></Route>
         <Route path='/app' element={<App />}>
           <Route path='*' element={<Page_404 />}></Route>
-        </Route> */}
+        </Route>
 
       </Routes>
     </>

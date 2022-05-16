@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import globalStateAndAction from '../../container/global.state';
 
 
-function PopupCart({cart}) {
+function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
     const number = cart.numberCart;
 
     
@@ -30,7 +30,14 @@ function PopupCart({cart}) {
                             <span className="header__cart-item-description">
                                 Mã món: {item.idFood}
                             </span>
-                            <span className="header__cart-item-remove">Xoa</span>
+                            <span 
+                                onClick={() => DecreaseQuantity(index)}
+                                className="header__cart-item-remove">
+
+                                    {/* {item.quantity==0 ? DeleteCart(index) : item.quantity}   */}
+
+                                    Xoa
+                            </span>
                         </div>
                     </div>
                 </li>
