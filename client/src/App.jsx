@@ -16,6 +16,7 @@ import Page_404 from './feature/Error/error404';
 import Login from "./feature/Login/login";
 import Layout from './layout/layout';
 import PageCart from './feature/PageCart/pageCart';
+import Bill from "./feature/bill/bill";
 function App() {
   return (
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='cart' element={<PageCart />}></Route>
         </Route>
        
+       <Route path="bill" element={<Bill/>}/>
         {/* <Route path='/login' element={<Login />}></Route>
         <Route path='/app' element={<App />}>
           <Route path='*' element={<Page_404 />}></Route>

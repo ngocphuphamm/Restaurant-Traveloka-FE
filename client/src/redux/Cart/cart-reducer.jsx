@@ -48,7 +48,6 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                     state.msg = true;
                     return {
                         ...state,
-
                     }
                 }
                 else {

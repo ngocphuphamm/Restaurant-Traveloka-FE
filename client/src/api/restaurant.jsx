@@ -8,12 +8,16 @@ const getRestaurant = (id) => {
     return axios.get(`/restaurant/${id}`)
 };
 
-const postBookRestaurant = () => {
-    return axios.post(`/bookrestaurant`)
+const searchRestaurant = (id) => {
+    return axios.get(`/restaurant/search?q=${id}`)
+}
+
+const postBookRestaurant = (body) => {
+    return axios.post(`/bookrestaurant`, body)
 };
 
 const getBookRestaurant = () => {
-    return axios.get(`/bookrestaurant`)
+    return axios.get(`/bookrestaurant/list`)
 };
 
 export default {
@@ -21,4 +25,5 @@ export default {
     getRestaurant,
     postBookRestaurant,
     getBookRestaurant,
+    searchRestaurant,
 };

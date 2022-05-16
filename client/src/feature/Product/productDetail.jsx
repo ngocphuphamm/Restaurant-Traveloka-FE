@@ -44,7 +44,7 @@ const ProductDetails = () => {
     const [listrender, setlistrender] = useState([]);
     const [listBook, setListBook] = useState([]);
     const [date, setDate] = useState(today.toLocaleDateString('en-CA'))
-    const [time, setTime] = useState("")
+    const [time, setTime] = useState(0)
     const [name, setName] = useState("")
     const [tel, setTel] = useState(0)
     const {productId} = useParams()
@@ -64,16 +64,6 @@ const ProductDetails = () => {
         }
     }
 
-    // const getBookReservations = async () =>{
-    //     try{
-    //         const a = await restaurantApi.getBookRestaurant();
-    //         setListBook(a.data);
-    //     }
-    //     catch (error) {
-    //         alert(error)
-    //     }
-    // }
-
 
     // const renderRestaurant = () => {
     //     if(listBook){
@@ -88,24 +78,22 @@ const ProductDetails = () => {
 
 
 
-    // const addReservations = async () => {
-    //     try {         
-    //         console.log(date,time,name,tel);
-    //         await restaurantApi.postBookRestaurant({
-    //             idRestaurant:productId,
-    //             dateBook: date,
-    //             timeBook: time,
-    //             nameBook: name,
-    //             phoneBook: tel,
-    //       });
-    //       setTime("");
-    //       setDate("");
-    //       setName("");
-    //       setTel(0);
-    //     } catch (error) {
-    //       console.log("loi");
-    //     }
-    //   };
+    const addReservations = async () => {
+        try {         
+            console.log(productId,date,name,tel, time);
+            await restaurantApi.postBookRestaurant({
+                idRestaurant:productId,
+                dateBook: date,
+                timeBook: time,
+                nameBook: name,
+                phoneBook: tel,
+          });
+          setTime();
+          setDate(date);
+          setName("");
+          setTel(83 `+`);
+        } catch (error) {return error;}
+    }
 
 
 
@@ -216,38 +204,13 @@ return (
                                 value={tel}
                                 onChange={(e)=> setTel(e.target.value)}
                                 ></input>
- 
-
-                                {/* <select  
-                                className='inputdate mt-4 col-md-12'
-                                >
-                                    <option value="">1 nguoi</option>
-                                    <option value="">2 nguoi</option>
-                                    <option value="">3 nguoi</option>
-                                    <option value="">4 nguoi</option>
-                                    <option value="">5 nguoi</option>
-                                    <option value="">6 nguoi</option>
-                                    <option value="">7 nguoi</option>
-                                    <option value="">8 nguoi</option>
-                                    <option value="">9 nguoi</option>
-                                    <option value="">10 nguoi</option>
-                                    <option value="">12 nguoi</option>
-                                    <option value="">13 nguoi</option>
-                                    <option value="">14 nguoi</option>
-                                    <option value="">15 nguoi</option>
-                                    <option value="">16 nguoi</option>
-                                    <option value="">17 nguoi</option>
-                                    <option value="">18 nguoi</option>
-                                    <option value="">19 nguoi</option>
-                                    <option value="">20 nguoi</option>
-                                </select >  */}
 
 
 
                                 <button 
                                 className="btn btn-outline-dark flex-shrink-0 col-md-12 mt-5" 
                                 type="button"
-                                // onClick={addReservations()}
+                                onClick={addReservations}
                                 >
                                     <i className="bi-cart-fill me-1"></i>
                                     Đặt chỗ
