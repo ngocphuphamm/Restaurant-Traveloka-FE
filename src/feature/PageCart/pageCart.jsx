@@ -11,8 +11,7 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
 
     Object.keys(cart.Carts).forEach(function(item,n){
  
-        TotalCart= (cart.Carts[item].quantity) * (cart.Carts[item].priceFood);
-        console.log((cart.Carts[item].quantity));
+        TotalCart += cart.Carts[item].quantity * cart.Carts[item].priceFood;
 
     });
     function TotalPrice(price,soluong){
