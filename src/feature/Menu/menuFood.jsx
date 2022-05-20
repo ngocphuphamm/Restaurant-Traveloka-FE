@@ -55,12 +55,12 @@ function Menu({cart,SetMsg}) {
                         <div className="col mb-5">
                             <div className="card h-100">
                         
-                                <img className="card-img-top" src={item.urlImage} alt="..." ></img>
+                                <img className="card-img-top style" src={item.urlImage} alt="..." ></img>
                         
                                 <div className="card-body p-4">
                                     <div className="text-center">
                                 
-                                        <h5 className="fw-bolder">{item.nameFood}</h5>
+                                        <h5 className="fw-bolder an">{item.nameFood}</h5>
                                         ${item.priceFood}
                                     </div>
                                 </div>

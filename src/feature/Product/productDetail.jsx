@@ -121,6 +121,7 @@ return (
                             slidesToShow={3}
                             slidesToScroll={1}
                             dots={true}
+                            transitionDuration={100}
                             >                          
                                     {listrender.imagesRestaurants.map((item,index) => (
                                     <div 

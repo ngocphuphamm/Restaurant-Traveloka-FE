@@ -19,8 +19,8 @@ import Layout from './layout/layout';
 import PageCart from './feature/PageCart/pageCart';
 import Bill from "./feature/bill/bill";
 function App() {
+  
   return (
-
     <>
       <Routes>
 

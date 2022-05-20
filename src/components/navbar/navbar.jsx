@@ -1,34 +1,57 @@
 
 import logo from '../../assets/img/3.jpg'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useParams } from 'react'
 import { Link, Outlet } from 'react-router-dom';
 import restaurantApi from '../../api/restaurant';
 import food from '../../api/food';
-import axios from 'axios';
 import PopupCart from '../cart/popupcart';
+import _ from 'lodash'
+// import { debounce } from 'lodash';
+import { debounce } from "debounce";
+
 
 export default function NavbarApp()
 {   
 
+
+    const debounceDropDown = (debounce((nextValue) => seacrhAll(nextValue), 8000), [])
+
+
+
+    const [visible, setVisible] = useState(false);
+    const [keyword, setKeyword] = useState('');
+    const [dropdownOptions, setDropdownOptions] = useState([]);
     const [rearchRestautant, setRearchRestautant] = useState();
     const [listlookfor, setlistlookfor] = useState([]);
     const [getValue, setGetValue] = useState("");
 
+
+
+    // const {id} = useParams()
+
+    function openDropdown() {
+        setVisible(true);
+      }
+
     const onChageName = (e) => {
         setGetValue(e.target.value)
+        debounceDropDown(e.target.value);
     }
 
 
+    
+    
+
     const seacrhAll = async () => {
         try {
-            const a = await food.search(`${getValue}`);
-            setlistlookfor(a.data)
-            const b = await restaurantApi.searchRestaurant(`${getValue}`);
-            setRearchRestautant(b.data)
+        const a = await food.search(`${getValue}`);
+        setlistlookfor(a.data)
+        const b = await restaurantApi.searchRestaurant(`${getValue}`);
+        setRearchRestautant(b.data)
         }
         catch (error){
             console.log(error);
-        }
+        }    
     }
 
 
@@ -36,6 +59,7 @@ export default function NavbarApp()
     // debounce
 
     const searchRes = () => {
+        
         if(rearchRestautant){
             return rearchRestautant.map((item,index)=>{
               return (
@@ -44,10 +68,8 @@ export default function NavbarApp()
                     <li 
                     key={index}
                     className="header-search-history-item"
-                    >
-                        <a>                            
-                            <div className='an'>{item.nameRestaurant}</div>
-                        </a>
+                    >                      
+                        <div className='an'>{item.nameRestaurant}</div>
                     </li>
                 </Link>
               )
@@ -85,6 +107,7 @@ export default function NavbarApp()
                     <Link to={"/"}>
                         <a className="navbar-brand" href="#page-top"><img src={logo} alt="..." ></img></a>
                     </Link>
+                    
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                             <li className="nav-item"><a className="nav-link" href="#services">Services</a></li>
@@ -134,8 +157,11 @@ export default function NavbarApp()
                                 </div>
                                 <PopupCart/>
                             </div>
-                        </div>
-                    </div>
+                           
+                        </div> 
+                    </div> 
+                    <a href='https://vy1-go1-profile-app-s3cic.ondigitalocean.app/y' > Login</a>
+                    <a href='https://vy1-go1-profile-app-s3cic.ondigitalocean.app/y' > MyVoucher</a>
                 </div>
             </nav>
         </div>

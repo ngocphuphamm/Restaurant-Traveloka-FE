@@ -52,14 +52,15 @@ function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
             <div className="header-cart-wrap">
                 
                 <i className="header__cart-icon ti-shopping-cart"></i>
-                <span className="header__cart-notice">{number}</span>
+                <span className="header__cart-notice header-cart-wrap">{number}</span>
 
-                <div className="header__cart-list">
-                    <img src="playstore.jpg" alt="" className="header__cart-no-cart-img"></img>
-                    <span className="header__cart-list-no-cart-msg">Chua co san Phan</span>
-
-                    <h4 className="header__cart-heading">San pham da them</h4>
-                    <ul className="header__cart-list-item">
+                <div className="header__cart-list scroll">
+                    {number === 0 ?<h4 className="header__cart-heading">Chưa có sản phẩm</h4> :
+                        <h4 className="header__cart-heading">Sản phẩm đã thêm</h4>
+                    }
+                
+                    
+                    <ul className="header__cart-list-item ">
 
                         {cartMini()}
 
@@ -67,7 +68,7 @@ function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
                     <Link
                     to={"/cart"}
                     >
-                    <button className="header__cart-view-cart btn btn--primary pading">Xem Gio Hang</button>
+                    <button className="header__cart-view-cart btn btn--primary pading ">Xem Gio Hang</button>
                     </Link>
                 </div>
             </div>

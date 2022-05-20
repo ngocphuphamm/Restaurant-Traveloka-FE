@@ -2,6 +2,12 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import globalStateAndAction from '../../container/global.state';
+import Popup from "reactjs-popup";
+
+const services = {
+    rest: '...',
+    voucher: '....'
+}
 
 
 function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
@@ -52,8 +58,17 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
                     <td class="text-right d-none d-md-block">
                         <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip" data-abc="true">
                             <i class="fa fa-heart"></i></a>
-                        <span href="" class="btn btn-light btn-round" 
-                                       onClick={()=>DeleteCart(key)}> Remove</span>
+                        <span href="" class="btn btn-light btn-round"                       
+                            onClick={()=>DeleteCart(key)}>                               
+                                <Popup modal trigger={<button> Remove</button>}>
+                                    Bạn có muốn xóa không
+                                    <div className='ngang'>
+                                        <button className='btn'>Hủy</button>
+                                        <span href="" class="btn btn-light btn-round"                       
+                            onClick={()=>DeleteCart(key)}> Xóa</span>
+                                    </div>
+                                </Popup>
+                        </span>
                     </td>
                 </tr>
 
