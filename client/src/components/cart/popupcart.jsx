@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import globalStateAndAction from '../../container/global.state';
 
 
-function PopupCart({cart}) {
+function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
     const number = cart.numberCart;
 
     
@@ -30,12 +30,24 @@ function PopupCart({cart}) {
                             <span className="header__cart-item-description">
                                 Mã món: {item.idFood}
                             </span>
-                            <span className="header__cart-item-remove">Xoa</span>
+                            <span 
+                                onClick={() => DeleteCart(index)}
+                                className="header__cart-item-remove">
+
+                                    {/* {item.quantity==0 ? DeleteCart(index) : item.quantity}   */}
+
+                                    Xóa
+                            </span>
                         </div>
                     </div>
                 </li>
               )
             })
+        }
+        else
+        {
+            <h1 className="header__cart-list-no-cart-msg">Chưa có sản phẩm</h1>
+
         }
     }
 
@@ -43,25 +55,23 @@ function PopupCart({cart}) {
         <div className="header-cart">
 
             <div className="header-cart-wrap">
-                
+            <Link
+                    to={"/cart"}
+                    >    
                 <i className="header__cart-icon ti-shopping-cart"></i>
                 <span className="header__cart-notice">{number}</span>
-
+                </Link>
                 <div className="header__cart-list">
                     <img src="playstore.jpg" alt="" className="header__cart-no-cart-img"></img>
-                    <span className="header__cart-list-no-cart-msg">Chua co san Phan</span>
-
-                    <h4 className="header__cart-heading">San pham da them</h4>
+                
+                    <h4 className="header__cart-heading">Sản phẩm đã thêm</h4>
                     <ul className="header__cart-list-item">
 
                         {cartMini()}
 
                     </ul>
-                    <Link
-                    to={"/cart"}
-                    >
-                    <button className="header__cart-view-cart btn btn--primary pading">Xem Gio Hang</button>
-                    </Link>
+             
+                 
                 </div>
             </div>
 
