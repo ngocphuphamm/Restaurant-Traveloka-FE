@@ -4,11 +4,17 @@ import pthanh from '../../assets/img/pthanh.jpg';
 import ttrang from '../../assets/img/ttrang.jpg';
 import nphu from '../../assets/img/nphu.jpg';
 import { useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet,useSearchParams } from 'react-router-dom';
 import restaurantApi from '../../api/restaurant';
 import { useParams } from 'react-router-dom';
 
 export default function Home() {
+
+
+
+
+
+
     const { id } = useParams()
 
     const [listlookfor, setlistlookfor] = useState("thanh");

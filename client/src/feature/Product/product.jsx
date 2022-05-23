@@ -9,10 +9,10 @@ import noithat from '../../assets/img/noithat.jfif';
 import voucher from '../../assets/img/voucher.jfif';
 import phonganchinh from '../../assets/img/phonganchinh.png';
 import terrace from '../../assets/img/terrace.png';
-
+import jwt_decode from "jwt-decode";
 // react
 import { Link, Outlet } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams,useSearchParams } from 'react-router-dom';
 
 import{ useEffect, useState } from 'react'
 import restaurantApi from '../../api/restaurant';
@@ -79,10 +79,10 @@ const Product = () => {
     return (
 		<div>
             <div className="product-area section">       
-                <header className="masthead">
+                <header className="masthead" style={{color:"black"}}>
                     <div className="container">
                         <div className="masthead-subheading">Chào mừng đến với chúng tôi!</div>
-                        <div className="masthead-heading text-uppercase">GonT hân hạnh phục vụ</div>
+                        <div className="masthead-heading text-uppercase">Traveloka hân hạnh phục vụ</div>
                         <a className="btn btn-primary btn-xl text-uppercase" href="#services">Đặt chỗ ngay</a>
                     </div>
                 </header>
