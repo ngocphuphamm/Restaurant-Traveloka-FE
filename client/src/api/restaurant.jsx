@@ -4,7 +4,7 @@ const getAllRestarant = () => {
     return axios.get("/restaurant")
 };
 
-const getRestaurant = (id) => {
+const getRestaurant = async (id) => {
     return axios.get(`/restaurant/${id}`)
 };
 
@@ -12,8 +12,8 @@ const searchRestaurant = (id) => {
     return axios.get(`/restaurant/search?q=${id}`)
 }
 
-const postBookRestaurant = (body) => {
-    return axios.post(`/bookrestaurant`, body)
+const postBookRestaurant = async (body) => {
+    return await axios.post(`/bookrestaurant`, body)
 };
 
 const getBookRestaurant = () => {

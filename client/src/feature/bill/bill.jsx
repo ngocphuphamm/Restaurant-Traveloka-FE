@@ -10,11 +10,11 @@ const Bill = ({ cart }) => {
       .get(`${process.env.REACT_APP_VOUCHER}`, {
         headers: {
           user_id: `ngocphu`,
-          partner_id: `7c9572f2-9b23-48fd-9c01-d43427ee2775`,
+          partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
         },
       })
       .then(function (response) {
-        
+        console.log(response.data.data.vouchers);
         setVoucher(response.data.data.vouchers);
         
       })
@@ -47,6 +47,7 @@ const Bill = ({ cart }) => {
       );
     });
   };
+
   return (
     <body>
       <div className="main">
@@ -136,15 +137,15 @@ const Bill = ({ cart }) => {
             <div className="checkout-bill">
               <div className="checkout-product">{renderFood()}</div>
               <div className="payment">
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Chọn Voucher</option>
+                <select class="form-select" aria-label="Default select example" >
+                  <option selected >Chọn Voucher</option>
                   {
                     voucher.map((el)=>{
                       const percent = el.limitUse / 1000000
                      
                       return(
                         <>
-                           <option value={el.voucherCode}> Giảm {
+                           <option value={el.voucherCode} > Giảm {
                              percent
                            } %</option>
                         </>

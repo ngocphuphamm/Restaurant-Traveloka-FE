@@ -67,7 +67,7 @@ const Product = () => {
                         <div className="product-content">
                             <h3><a href="product-details.html">{item.nameRestaurant}</a></h3>
                             <div className="product-price">
-                            <span>${item.priceService}</span>
+                            <span>{item.priceService},000 VND</span>
                             </div>
                         </div>
                     </div>
