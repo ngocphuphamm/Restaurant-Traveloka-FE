@@ -9,7 +9,7 @@ const getMenuFood = (id) => {
     return axios.get(`/food/getAllFood/${id}`)
 };
 
-const search = (id) => {
+const searchFood = (id) => {
     return axios.get(`/food/search/${id}`)
 }
 
@@ -26,5 +26,5 @@ export const actFetchFoodRequest = async (id) => {
 export default {
     getAllFood,
     getMenuFood,
-    search,
+    searchFood,
 };
