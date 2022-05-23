@@ -48,7 +48,7 @@ export default function NavbarApp() {
               data-toggle="popover"
               onClick={async () => {
                 await localStorage.removeItem("accessToken");
-                await window.location.replace("http://localhost:3000/");
+                await window.location.replace("http://95.111.203.4:2555/");
               }}
             >
               Đăng Xuất
@@ -90,7 +90,7 @@ export default function NavbarApp() {
               type="button"
               onClick={async () => {
                 await localStorage.removeItem("accessToken");
-                await window.location.replace("http://localhost:3000/");
+                await window.location.replace("http://95.111.203.4:2555/");
               }}
             >
               Đăng Xuất
@@ -103,7 +103,7 @@ export default function NavbarApp() {
         <li className="nav-item">
           <a
             className="nav-link"
-            href="http://95.111.203.4:3020/Login?callback=http://localhost:3000/"
+            href="http://95.111.203.4:3020/Login?callback=http://95.111.203.4:2555/"
           >
             Login
           </a>

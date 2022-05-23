@@ -34,8 +34,6 @@ function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
                                 onClick={() => DeleteCart(index)}
                                 className="header__cart-item-remove">
 
-                                    {/* {item.quantity==0 ? DeleteCart(index) : item.quantity}   */}
-
                                     Xóa
                             </span>
                         </div>

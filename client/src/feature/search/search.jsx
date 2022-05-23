@@ -10,7 +10,7 @@ function Search() {
     useEffect( () => {
         
             const queryParamater = searchParams.get("q");
-            axios.get(`http://localhost:3003/api/restaurant/search?q=${queryParamater}`)
+            axios.get(`http://95.111.203.4:3003/api/restaurant/search?q=${queryParamater}`)
             .then((res)=>{
                 console.log(res.data)
                 setListRestaurants(res.data);
