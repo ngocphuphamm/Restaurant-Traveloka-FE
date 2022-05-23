@@ -531,12 +531,13 @@
 .header__cart-list::after{
     cursor: pointer;
     content: "";
+    width: 100%;
     position: absolute;
     right: 0px;
     top:-30px;
     border-width: 22px 27px;
     border-style: solid;
-    border-color: transparent transparent var(--white-color) transparent;
+    border-color: transparent transparent transparent transparent;
 }
 
 .header-cart-wrap{
@@ -565,6 +566,7 @@
     animation: faceIn ease-in 0.16s;
     cursor: default;
     max-height: 400px;
+    outline: none;
     
 }
 
@@ -769,7 +771,6 @@
 .header__cart-list-item{
     padding-left: 0px;
     list-style: none;
-    height: 50vh;
     overflow-y: auto;
 }
 
@@ -1626,11 +1627,10 @@ a {
     overflow: hidden;
     border: none;
     border-radius: 4px;
-    border: 1px solid #e2cccc;
+    /* border: 1px solid #e2cccc; */
     background-color: #fff;
     color: #333333;
     font-family: Helvetica;
-    font-size: 1.4rem;
     padding: 0 12px;
   }
   .form-control input::placeholder {
@@ -1641,7 +1641,7 @@ a {
     padding: 0 12px;
   }
   
-  .form-inline {
+  .form-inline_1 {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -1649,10 +1649,10 @@ a {
   }
   /* 100% / 3= 33% *2=66%   */
   
-  .form-inline .w-2 {
+  .form-inline_1 .w-2 {
     width: 66%;
   }
-  .form-inline .w-1 {
+  .form-inline_1 .w-1 {
     width: calc(100% - 66% - 10px);
   }
   
@@ -1838,4 +1838,18 @@ a {
   .payment-total .total-text {
     color: #4b4b4b;
     font-weight: bolder;
+  }
+  .style{
+      width: 100% !important;
+      height: 150px !important;
+  }
+  .ngang{
+      width: 100vh;
+      background-color: #ee4d2d;
+      height: 60px;
+      display: flex;
+      justify-content: space-around;
+  }
+  .scroll{
+    /* overflow-y: auto; */
   }

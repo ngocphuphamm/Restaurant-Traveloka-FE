@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import globalStateAndAction from '../../container/global.state';
+import { Link } from 'react-router-dom';
 
 
 function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
@@ -44,10 +45,10 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
                         <span className="btn btn-primary" style={{ margin: '-3px' }}
                             onClick={() => IncreaseQuantity(key)}     >+</span> </td>
                     <td>
-                        <div class="price-wrap"> <var class="price">{item.priceFood}</var></div>
+                        <div class="price-wrap"> <var class="price">{item.priceFood},000 VND</var></div>
                     </td>
                     <td>
-                        <div class="price-wrap"> <var class="price">{TotalPrice(item.priceFood,item.quantity)}</var></div>
+                        <div class="price-wrap"> <var class="price">{TotalPrice(item.priceFood,item.quantity).toLocaleString()},000 VND</var></div>
                     </td>
                     <td class="text-right d-none d-md-block">
                         <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip" data-abc="true">
@@ -138,9 +139,13 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Total:</dt>
-                                <dd class="text-right text-dark b ml-3"><strong>{TotalCart}</strong></dd>
+                                <dd class="text-right text-dark b ml-3"><strong>{TotalCart.toLocaleString()},000 VND</strong></dd>
                             </dl>
-                            <hr></hr> <a href="#" class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Make Purchase </a> <a href="#" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Continue Shopping</a>
+                            <hr></hr> <Link to="/bill">  <a href="#" class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Thanh Toán </a></Link>
+
+                            <Link to="/">  <a href="#" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</a></Link>
+
+                         
                         </div>
                     </div>
                 </aside>

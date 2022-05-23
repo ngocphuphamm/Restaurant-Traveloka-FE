@@ -18,6 +18,7 @@ import Login from "./feature/Login/login";
 import Layout from './layout/layout';
 import PageCart from './feature/PageCart/pageCart';
 import Bill from "./feature/bill/bill";
+import Search from '../src/feature/search/search';
 function App() {
   return (
 
@@ -29,6 +30,8 @@ function App() {
           <Route path=':productId' element={<ProductDetails />} />
           <Route path='id/:abc' element={<Menu />}></Route>
           <Route path='cart' element={<PageCart />}></Route>
+          <Route path="search" element={<Search />}></Route>
+          
         </Route>
        
        <Route path="bill" element={<Bill/>}/>

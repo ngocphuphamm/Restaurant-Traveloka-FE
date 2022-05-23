@@ -61,7 +61,7 @@ function Menu({cart,SetMsg}) {
                                     <div className="text-center">
                                 
                                         <h5 className="fw-bolder">{item.nameFood}</h5>
-                                        ${item.priceFood}
+                                        {item.priceFood},000 VND
                                     </div>
                                 </div>
                         

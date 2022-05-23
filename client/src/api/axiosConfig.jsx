@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://95.111.203.4:3003/api',
+    baseURL: `${process.env.REACT_APP_API_URL}`,
     timeout: 1000,
 });
 // Config nhw nay, import vao thoi, có dùng accessToken thì check trong đây lun
