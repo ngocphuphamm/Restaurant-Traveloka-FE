@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const Bill = ({ cart }) => {
   const [voucher, setVoucher] = useState([]);
+  const [amountSale, setAmountSale] = useState('');
+  const [voucherCode,setVoucherCode] = useState('');
+  let amount = 0; 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_VOUCHER}`, {
@@ -14,17 +17,18 @@ const Bill = ({ cart }) => {
         },
       })
       .then(function (response) {
-        console.log(response.data.data.vouchers);
         setVoucher(response.data.data.vouchers);
         
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, [voucher]);
+  }, []);
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {
+      amount += Number(el.quantity) * Number(el.priceFood)
+
       return (
         <div className="product-item">
           <div className="item-img">
@@ -47,7 +51,24 @@ const Bill = ({ cart }) => {
       );
     });
   };
-
+  const changeCode=(newCode)=>{
+   
+      setVoucherCode(newCode);
+      axios
+      .get(`http://128.199.241.206:8080/api/v1/user/voucher/check-condition?amount=${amount}&code=${newCode}&typeVoucher=nha-hang`, {
+        headers: {
+          user_id: `ngocphu`,
+          partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
+        },
+      })
+      .then(function (response) {
+         
+          setAmountSale(response.data.data.amount);
+       })
+      .catch(function (error) {
+          alert("SỐ TIỀN MUA KHÔNG ĐỦ ÁP DỤNG VOUCHER");
+      });
+  }
   return (
     <body>
       <div className="main">
@@ -137,17 +158,19 @@ const Bill = ({ cart }) => {
             <div className="checkout-bill">
               <div className="checkout-product">{renderFood()}</div>
               <div className="payment">
-                <select class="form-select" aria-label="Default select example" >
+                <select class="form-select" aria-label="Default select example"
+                             onChange={(event) => changeCode(event.target.value)}
+                             value={voucherCode} >
                   <option selected >Chọn Voucher</option>
                   {
-                    voucher.map((el)=>{
-                      const percent = el.limitUse / 1000000
+                    voucher.map((el,index)=>{
+                 
                      
                       return(
                         <>
-                           <option value={el.voucherCode} > Giảm {
-                             percent
-                           } %</option>
+                           <option key={index} value={el.voucherCode} >{
+                                el.title
+                           }</option>
                         </>
                       )
                    
@@ -156,18 +179,14 @@ const Bill = ({ cart }) => {
                   
                 </select>
                 <div className="payment-money">
-                  <div className="total">
-                    <div className="total-text">Tạm tính:</div>
-                    <div className="total-text total-money">700000₫</div>
-                  </div>
-                  <div className="total">
+                   <div className="total">
                     <div className="total-text">Phí vận chuyển:</div>
-                    <div className="total-text total-money">30000₫</div>
+                    <div className="total-text total-money">{amount ? amount+",000 VND":0}</div>
                   </div>
                 </div>
                 <div className="payment-total total">
                   <div className="total-text">Tổng cộng:</div>
-                  <div className="total-text total-money">730000₫</div>
+                  <div className="total-text total-money">{amountSale ? amountSale+ ",000 VND" : 0}</div>
                 </div>
               </div>
             </div>

@@ -39,7 +39,6 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 state.idRestaurant = action.payload.idRestaurant;
 
                 state.Carts.push(cart);
-                console.log(state.Carts);
                 state.numberCart += 1;
             }
             else {
