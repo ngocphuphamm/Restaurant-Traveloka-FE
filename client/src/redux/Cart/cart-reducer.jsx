@@ -1,4 +1,4 @@
-import { ADD_TO_CART, GET_ALL_FOOD_REDUX, GET_NUMBER_CART, SET_MSG, INCREASE_QUANTITY, DECREASE_QUANTITY,DELETE_CART } from "./cart-type";
+import { DELETE_ALL_CART,ADD_TO_CART, GET_ALL_FOOD_REDUX, GET_NUMBER_CART, SET_MSG, INCREASE_QUANTITY, DECREASE_QUANTITY,DELETE_CART } from "./cart-type";
 
 
 /* * numberCart: dùng lưu số lượng sản phẩm đã mua có trong giỏ hàng(Carts)
@@ -37,9 +37,10 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                     nameRestaurant: action.payload.nameRestaurant
                 };
                 state.idRestaurant = action.payload.idRestaurant;
-
+                alert("THÊM VÀO GIỎ HÀNG THÀNH CÔNG 🥳")
                 state.Carts.push(cart);
                 state.numberCart += 1;
+              
             }
             else {
                 if (state.idRestaurant !== action.payload.idRestaurant) {
@@ -71,7 +72,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                             nameRestaurant: action.payload.nameRestaurant
                         };
                         state.Carts.push(cart);
-                        
+                        alert("THÊM VÀO GIỎ HÀNG THÀNH CÔNG 🥳")
                     }
                 }
 
@@ -117,7 +118,16 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 })
 
             }
-          
+        case DELETE_ALL_CART : 
+            return{
+                ...state,
+                numberCart: 0,
+                Carts: [],
+                foods: [],
+                idRestaurant: "",
+                msg: false
+
+            }
 
         default:
             return state;

@@ -1,5 +1,5 @@
 
-import { GET_ALL_FOOD_REDUX, GET_NUMBER_CART, ADD_TO_CART,UPDATE_CART,DELETE_CART,INCREASE_QUANTITY,DECREASE_QUANTITY,SET_MSG} from './cart-type';
+import { DELETE_ALL_CART,GET_ALL_FOOD_REDUX, GET_NUMBER_CART, ADD_TO_CART,UPDATE_CART,DELETE_CART,INCREASE_QUANTITY,DECREASE_QUANTITY,SET_MSG} from './cart-type';
 
 
 
@@ -55,5 +55,12 @@ export function DecreaseQuantity(payload){
     return{
         type:DECREASE_QUANTITY,
         payload
+    }
+}
+
+export function DeleteAllCart()
+{
+    return{
+        type: DELETE_ALL_CART
     }
 }

@@ -6,3 +6,4 @@ export const ADD_TO_CART = 'ADD_CART' ;
 export const UPDATE_CART = 'UPDATE_CART';
 export const DELETE_CART = 'DELETE_CART';
 export const SET_MSG = 'SET_MSG';
+export const DELETE_ALL_CART = 'DELETE_ALL_CART';
