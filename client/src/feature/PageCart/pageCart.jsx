@@ -1,14 +1,11 @@
 import React from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react';
 import globalStateAndAction from '../../container/global.state';
 import { Link } from 'react-router-dom';
 
-
-function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteAllCart }) {
-    let ListCart = [];
+function PageCart({ idRestaurant,cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteAllCart }) {
     let TotalCart=0;
-    
+
+
 
     Object.keys(cart.Carts).forEach(function(item,n){
  
@@ -30,10 +27,10 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteA
                 <tr key={key}>
                     <td>
                         <figure class="itemside align-items-center">
-                            <div class="aside"><img src={item.imageFood} class="img-sm"></img></div>
-                            <figcaption class="info"> <a href="#" class="title text-dark" data-abc="true">{item.nameFood}</a>
+                            <div class="aside"><img alt="" src={item.imageFood} class="img-sm"></img></div>
+                            <div class="info"> <span href="#" class="title text-dark" data-abc="true">{item.nameFood}</span>
                                 <p class="small text-muted">{item.idFood} <br></br> {item.nameRestaurant}</p>
-                            </figcaption>
+                            </div>
                         </figure>
                     </td>
                     <td> <span className="btn btn-primary" style={{ margin: '-3px' }}
@@ -51,10 +48,8 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteA
                         <div class="price-wrap"> <var class="price">{TotalPrice(item.priceFood,item.quantity).toLocaleString()},000 VND</var></div>
                     </td>
                     <td class="text-right d-none d-md-block">
-                        <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip" data-abc="true">
-                            <i class="fa fa-heart"></i></a>
                         <span href="" class="btn btn-light btn-round" 
-                                       onClick={()=>DeleteCart(key)}> Remove</span>
+                                       onClick={()=>DeleteCart(key)}>Xóa</span>
                     </td>
                 </tr>
 
@@ -77,7 +72,7 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteA
         if (nameRestaurant) {
             return   <button class="btn btn-danger btn-round"
                              onClick={()=>DeleteAllCart()} 
-            > Clear</button>
+            > Xóa Tất Cả Sản Phẩm</button>
 
         }
         else {
@@ -99,10 +94,10 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteA
                             <table class="table table-borderless table-shopping-cart">
                                 <thead class="text-muted">
                                     <tr class="small text-uppercase">
-                                        <th scope="col">Product</th>
-                                        <th scope="col" width="120">Quantity</th>
-                                        <th scope="col" width="120">Price</th>
-                                        <th scope="col" width="120">TotalPrice</th>
+                                        <th scope="col">Sản Phẩm</th>
+                                        <th scope="col" width="120">Số Lượng</th>
+                                        <th scope="col" width="120">Giá</th>
+                                        <th scope="col" width="120">Thành Tiền</th>
                                         <th scope="col" class="text-right d-none d-md-block" width="200"></th>
                                     </tr>
                                 </thead>
@@ -131,21 +126,21 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteA
                     <div class="card">
                         <div class="card-body">
                             <dl class="dlist-align">
-                                <dt>Total price:</dt>
+                                <dt>Tổng Tiền : </dt>
                                 <dd class="text-right text-danger ml-3">Chưa áp dụng</dd>
                             </dl>
                             <dl class="dlist-align">
-                                <dt>Discount:</dt>
+                                <dt>Giảm Giá:</dt>
                                 <dd class="text-right text-danger ml-3">Chưa áp dụng</dd>
                             </dl>
                             <dl class="dlist-align">
-                                <dt>Total:</dt>
+                                <dt>Tổng Tiền:</dt>
                                 <dd class="text-right text-dark b ml-3"><strong>{TotalCart.toLocaleString()},000 VND</strong></dd>
                             </dl>
-                            <hr></hr> <Link to="/bill">  <a href="#" class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Thanh Toán </a></Link>
-
-                            <Link to="/">  <a href="#" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</a></Link>
-
+                            {idRestaurant ?  <Link to={`/foodRestaurant/${idRestaurant}`}>  <button  class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link> :  <Link to="/">  <button  class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link>}
+                           
+                            <hr></hr>
+                             {!nameRestaurant ? <div></div> : <Link to="/bill">  <button  class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Thanh Toán </button></Link>}
                          
                         </div>
                     </div>

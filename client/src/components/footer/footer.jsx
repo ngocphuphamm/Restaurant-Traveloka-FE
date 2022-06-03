@@ -1,7 +1,4 @@
 import logo from "../../assets/img/3.jpg";
-import pthanh from "../../assets/img/pthanh.jpg";
-import ttrang from "../../assets/img/ttrang.jpg";
-import nphu from "../../assets/img/nphu.jpg";
 import { Link } from "react-router-dom";
 export default function Footer() {
   return (

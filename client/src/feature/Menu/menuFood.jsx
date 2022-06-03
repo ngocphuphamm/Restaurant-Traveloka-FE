@@ -6,9 +6,8 @@ import { useParams } from 'react-router-dom';
 import { AddToCart } from '../../redux/Cart/cart-action';
 import globalStateAndAction from '../../container/global.state';
 
-
 function Menu({cart,SetMsg}) {
-    
+
     const {id} = useParams() 
     const dispatch = useDispatch();
     const [menu, setMenu] = useState([]);
@@ -41,7 +40,6 @@ function Menu({cart,SetMsg}) {
 
     
     const handleClicKAddToCart = (payload)=>{
-       
         dispatch(AddToCart(payload));
     }
     const renderMenu = () => {

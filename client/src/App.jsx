@@ -8,7 +8,6 @@ import './App.css';
 
 // react
 import { Routes, Route } from "react-router-dom";
-import Home from "./feature/Home/home";
 import Product from "./feature/Product/product";
 import ProductDetails from "./feature/Product/productDetail";
 import Menu from "./feature/Menu/menuFood";

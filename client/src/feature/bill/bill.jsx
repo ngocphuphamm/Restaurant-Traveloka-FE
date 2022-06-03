@@ -1,4 +1,3 @@
-import style from "./Bill.module.css";
 import { Link } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import { useEffect, useState } from "react";
