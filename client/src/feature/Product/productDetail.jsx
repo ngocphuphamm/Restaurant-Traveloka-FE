@@ -31,11 +31,13 @@ const ProductDetails = () => {
 
 
   const addReservations = async () => {
-   
+     
+    const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
    
      const res = await restaurantApi.postBookRestaurant({
         idRestaurant: id,
         dateBook: date,
+        idCustomer: infoUser ? infoUser.sub : null,
         bookingSession: bookingSession,
         nameBook: name,
         phoneBook: tel,
@@ -167,7 +169,7 @@ const ProductDetails = () => {
                     className="inputdate mt-4 col-md-12"
                     placeholder="Nhập số điện thoại"
                     value={tel}
-                    onChange={(e) => setTel(e.target.value)}
+                    onChange={(e) => (e.target.value).length <= 10  ? setTel(e.target.value) : alert("VUI LÒNG NHẬP ĐÚNG SỐ ĐIÊN THOẠI 🤥 ")}
                   ></input>
 
                   <button

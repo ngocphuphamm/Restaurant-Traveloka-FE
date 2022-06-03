@@ -1,3 +1,8 @@
+
+import "../../assets/css/shop.css";
+
+import "../../assets/css/style.css";
+import "../../assets/css/styles.css";
 // images
 import b2 from "../../assets/img/b2.jfif";
 import b3 from "../../assets/img/b3.jfif";
