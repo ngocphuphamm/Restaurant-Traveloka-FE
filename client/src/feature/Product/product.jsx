@@ -35,7 +35,7 @@ const Product = () => {
           <Link
             key={index}
             className="col-xl-3 col-lg-4 col-md-4 col-12"
-            to={`/${item.idRestaurant}`}
+            to={`/restaurant/${item.idRestaurant}`}
           >
             <div className="single-product">
               <div className="product-img">

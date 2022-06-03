@@ -71,7 +71,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                             nameRestaurant: action.payload.nameRestaurant
                         };
                         state.Carts.push(cart);
-
+                        
                     }
                 }
 
