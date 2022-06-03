@@ -5,7 +5,7 @@ import globalStateAndAction from '../../container/global.state';
 import { Link } from 'react-router-dom';
 
 
-function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
+function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart,DeleteAllCart }) {
     let ListCart = [];
     let TotalCart=0;
     
@@ -75,8 +75,9 @@ function PageCart({ cart, IncreaseQuantity, DecreaseQuantity, DeleteCart }) {
 
     const functionShowClear = () => {
         if (nameRestaurant) {
-            return   <a href="" class="btn btn-danger btn-round" 
-            > Clear</a>
+            return   <button class="btn btn-danger btn-round"
+                             onClick={()=>DeleteAllCart()} 
+            > Clear</button>
 
         }
         else {
