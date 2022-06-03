@@ -1,7 +1,4 @@
 import logo from "../../assets/img/3.jpg";
-import pthanh from "../../assets/img/pthanh.jpg";
-import ttrang from "../../assets/img/ttrang.jpg";
-import nphu from "../../assets/img/nphu.jpg";
 import { Link } from "react-router-dom";
 export default function Footer() {
   return (
@@ -119,9 +116,6 @@ export default function Footer() {
                 <div className="fw-bolder">Form submission successful!</div>
                 To activate this form, sign up at
                 <br></br>
-                <a href="https://startbootstrap.com/solution/contact-forms">
-                  https://startbootstrap.com/solution/contact-forms
-                </a>
               </div>
             </div>
 
@@ -152,7 +146,7 @@ export default function Footer() {
                 <div className="single-footer about">
                   <div className="logo">
                     <Link to="/">
-                      <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg"></img>
+                      <img alt="" src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg"></img>
                     </Link>{" "}
                   </div>
                   <p className="text">
@@ -174,19 +168,19 @@ export default function Footer() {
                   <h4>Information</h4>
                   <ul>
                     <li>
-                      <a href="#">About Us</a>
+                      <span >About U  </span>
                     </li>
                     <li>
-                      <a href="#">Faq</a>
+                      <span >Fa </span>
                     </li>
                     <li>
-                      <a href="#">Terms vs Conditions</a>
+                      <span >Terms vs Condition </span>
                     </li>
                     <li>
-                      <a href="#">Contact Us</a>
+                      <span >Contact U </span>
                     </li>
                     <li>
-                      <a href="#">Help</a>
+                      <span >Help </span>
                     </li>
                   </ul>
                 </div>
@@ -262,16 +256,18 @@ export default function Footer() {
                   <div className="left">
                     <p>
                       Copyright © 2020{" "}
-                      <a href="http://www.wpthemesgrid.com" target="_blank">
-                        GonT
-                      </a>{" "}
+                      <span  target="_blank">
+                        Traveloka
+                      </span>{" "}
                       - All Rights Reserved.
                     </p>
                   </div>
                 </div>
                 <div className="col-lg-6 col-12">
                   <div className="right">
-                    <img className="img_logo_1" src={logo} alt="..."></img>
+                  <img alt="" className="img_logo_1" src="https://cdn-contents.anymindgroup.com/corporate/wp-uploads/2019/12/traveloka-logo.jpg"></img>
+
+                 
                   </div>
                 </div>
               </div>
