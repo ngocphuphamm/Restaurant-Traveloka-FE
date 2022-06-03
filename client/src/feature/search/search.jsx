@@ -1,23 +1,23 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 // Phú PLAY CODE
 import { useState , useEffect} from 'react';
-import { Link, Outlet, useSearchParams } from "react-router-dom";
-import  restaurantApi from "../../api/restaurant";
+import { Link, useSearchParams } from "react-router-dom";
 import  axios  from 'axios';
 
 function Search() { 
     const [listRestaurants,setListRestaurants] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     useEffect( () => {
-        
+
             const queryParamater = searchParams.get("q");
-            axios.get(`http://95.111.203.4:3003/api/restaurant/search?q=${queryParamater}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/restaurant/search?q=${queryParamater}`)
             .then((res)=>{
                 console.log(res.data)
                 setListRestaurants(res.data);
             })
            
        
-    },[])
+    },[searchParams])
     const renderRestaurant = () => {
         if(listRestaurants){
           return listRestaurants.map((item,index)=>{

@@ -1,28 +1,19 @@
-import logo from "../../assets/img/3.jpg";
-import { useEffect, useState } from "react";
-import { Link, Outlet, useSearchParams } from "react-router-dom";
-import restaurantApi from "../../api/restaurant";
-import food from "../../api/food";
-import axios from "axios";
-import PopupCart from "../cart/popupcart";
+import { Link, useSearchParams } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import { useNavigate, createSearchParams } from "react-router-dom";
 import Search from './search';
 
 export default function NavbarApp() {
-  const infoUser = JSON.parse(localStorage.getItem("accessToken"));
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const [searchParams] = useSearchParams();
   const renderLogin = () => {
     const urlRedirect = searchParams.get("token");
     const local = JSON.parse(localStorage.getItem("accessToken"));
+  
     if (local) {
       return (
         <>
-          <a
-            href="#"
+          <span
             onClick={async () => {
-              await window.location.replace("http://95.111.203.4:3020/");
+              await window.location.replace(`${process.env.REACT_APP_PROFILE}`);
             }}
           >
             <svg
@@ -39,7 +30,7 @@ export default function NavbarApp() {
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
               />
             </svg>
-          </a>
+          </span>
 
           <li className="nav-item">
             <button
@@ -48,7 +39,7 @@ export default function NavbarApp() {
               data-toggle="popover"
               onClick={async () => {
                 await localStorage.removeItem("accessToken");
-                await window.location.replace("http://95.111.203.4:2555/");
+                await window.location.reload();
               }}
             >
               Đăng Xuất
@@ -62,10 +53,9 @@ export default function NavbarApp() {
       localStorage.setItem("accessToken", JSON.stringify(decode));
       return (
         <>
-          <a
-            href="#"
+          <span
             onClick={async () => {
-              await window.location.replace("http://95.111.203.4:3020/");
+              await window.location.replace(`${process.env.REACT_APP_PROFILE}`);
             }}
           >
             <svg
@@ -82,7 +72,7 @@ export default function NavbarApp() {
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
               />
             </svg>
-          </a>
+          </span>
 
           <li className="nav-item">
             <button
@@ -90,7 +80,7 @@ export default function NavbarApp() {
               type="button"
               onClick={async () => {
                 await localStorage.removeItem("accessToken");
-                await window.location.replace("http://95.111.203.4:2555/");
+                await window.location.replace(`${process.env.REACT_APP_FRONTEND}`);
               }}
             >
               Đăng Xuất
@@ -103,7 +93,7 @@ export default function NavbarApp() {
         <li className="nav-item">
           <a
             className="nav-link"
-            href="http://95.111.203.4:3020/Login?callback=http://95.111.203.4:2555/"
+            href={`${process.env.REACT_APP_PROFILE}Login?redirect=${process.env.REACT_APP_FRONTEND}`}
           >
             Login
           </a>
@@ -120,7 +110,7 @@ export default function NavbarApp() {
       >
         <div className="container">
           <Link to="/">
-            <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg"></img>
+            <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg" alt=""></img>
           </Link>
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
