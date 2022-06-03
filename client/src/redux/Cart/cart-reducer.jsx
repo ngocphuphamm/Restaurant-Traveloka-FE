@@ -26,7 +26,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 ...state,
             }
         case ADD_TO_CART:
-            if (state.numberCart == 0) {
+            if (state.numberCart === 0) {
                 let cart = {
                     idFood: action.payload.idFood,
                     idRestaurant: action.payload.idRestaurant,
@@ -53,7 +53,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
 
                     let check = false;
                     state.Carts.map((item, key) => {
-                        if (item.idFood == action.payload.idFood) {
+                        if (item.idFood === action.payload.idFood) {
                             state.Carts[key].quantity++;
                             check = true;
                         }
@@ -113,7 +113,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 ...state,
                 numberCart: state.numberCart - quantity_,
                 Carts: state.Carts.filter(item => {
-                    return item.idFood != state.Carts[action.payload].idFood
+                    return item.idFood !== state.Carts[action.payload].idFood
                 })
 
             }

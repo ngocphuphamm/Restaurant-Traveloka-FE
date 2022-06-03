@@ -28,7 +28,7 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route path='' element={<Product />} />
           <Route path=':productId' element={<ProductDetails />} />
-          <Route path='id/:abc' element={<Menu />}></Route>
+          <Route path='foodRestaurant/:id' element={<Menu />}></Route>
           <Route path='cart' element={<PageCart />}></Route>
           <Route path="search" element={<Search />}></Route>
           

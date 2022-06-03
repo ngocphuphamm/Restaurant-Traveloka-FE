@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
-import { axios } from 'axios';
 const ProductDetails = () => {
 
   const today = new Date();
   const [listrender, setlistrender] = useState([]);
-  const [listBook, setListBook] = useState([]);
   const [date, setDate] = useState(today.toLocaleDateString("en-CA"));
   const [bookingSession, setBookingSession] = useState(  );
   const [name, setName] = useState("");
@@ -67,7 +65,7 @@ const ProductDetails = () => {
     if (Date.parse(date) + 100000000 < today.getTime()) {
       alert("Vui lòng chọn lại ngày");
     }
-  }, [date]);
+  }, [date, today]);
 
   return (
     <div className="up_top">
@@ -118,7 +116,7 @@ const ProductDetails = () => {
 
                 <p className="lead">{listrender?.descriptionRestaurant}</p>
                 <div className="d-flex">
-                  <Link to={`/id/${listrender.idRestaurant}`}>
+                  <Link to={`/foodRestaurant/${listrender.idRestaurant}`}>
                     <button
                       className="btn btn-outline-dark flex-shrink- inputdate mt-5"
                       type="button"
@@ -144,8 +142,7 @@ const ProductDetails = () => {
                   ></input>
 
                   <select
-                    class="form-select mt-2"
-                    className="inputdate mt-4 col-md-12"
+                    className ="form-select mt-2 inputdate mt-4 col-md-12"
                     aria-label="Default select example"
                     onChange={(e)=>{
                         setBookingSession(e.target.value)

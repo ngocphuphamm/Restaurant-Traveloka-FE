@@ -78,7 +78,7 @@ const Bill = ({ cart }) => {
               <div className="checkout-logo-text checkout-item">
                 <Link to="/">
                   {" "}
-                  <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg"></img>
+                  <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg" alt=""></img>
                 </Link>
               </div>
               <ul className="checkout-breadcrumb checkout-item">
@@ -93,7 +93,7 @@ const Bill = ({ cart }) => {
                   <i className="icon-link bx bx-chevron-right"></i>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="" className="cart text-link">
+                  <a href=""  className="cart text-link">
                     {" "}
                     Phương thức thanh toán{" "}
                   </a>

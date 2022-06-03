@@ -1,7 +1,7 @@
 import React from 'react'
 import foodtApi from "../../api/food"
 import{ useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { AddToCart } from '../../redux/Cart/cart-action';
 import globalStateAndAction from '../../container/global.state';
@@ -9,10 +9,9 @@ import globalStateAndAction from '../../container/global.state';
 
 function Menu({cart,SetMsg}) {
     
-    const {abc} = useParams() 
+    const {id} = useParams() 
     const dispatch = useDispatch();
     const [menu, setMenu] = useState([]);
-    // const dataPost = useSelector((state) => state?.cartSlide?.data);
 
     useEffect(() => {
         getDataMenu();
@@ -22,7 +21,7 @@ function Menu({cart,SetMsg}) {
     
      const getDataMenu =  async () => {       
         try {
-          const a = await foodtApi.getMenuFood(`${abc}`);
+          const a = await foodtApi.getMenuFood(`${id}`);
           setMenu(a.data)
         } catch {
           alert("loi API")
@@ -37,7 +36,7 @@ function Menu({cart,SetMsg}) {
             
           
         }
-    },[cart.msg])
+    },[SetMsg, cart.msg])
 
 
     
@@ -67,13 +66,13 @@ function Menu({cart,SetMsg}) {
                         
                                 <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div className="text-center">
-                                        <a 
+                                        <button 
                                         className="btn btn-outline-dark mt-auto" 
                                         href="#"
                                         onClick = {()=>{handleClicKAddToCart(item)}}
                                         >
                                             Thêm vào giỏ
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
