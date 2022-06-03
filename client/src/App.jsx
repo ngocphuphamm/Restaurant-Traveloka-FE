@@ -23,7 +23,7 @@ function App() {
 
     <>
       <Routes>
-
+      
         <Route path='/' element={<Layout />}>
           <Route path='' element={<Product />} />
           <Route path='restaurant/:id' element={<ProductDetails />} />
