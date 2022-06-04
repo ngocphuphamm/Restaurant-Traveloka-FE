@@ -1,8 +1,5 @@
 // css
-import "./assets/css/shop.css";
-import "./assets/css/home.css";
-import "./assets/css/style.css";
-import "./assets/css/styles.css";
+
 import './App.css';
 
 
@@ -11,11 +8,11 @@ import { Routes, Route } from "react-router-dom";
 import Product from "./feature/Product/product";
 import ProductDetails from "./feature/Product/productDetail";
 import Menu from "./feature/Menu/menuFood";
-import Login from "./feature/Login/login";
 import Layout from './layout/layout';
 import PageCart from './feature/PageCart/pageCart';
 import Bill from "./feature/bill/bill";
 import Search from '../src/feature/search/search';
+import Payment from './feature/bill/payment';
 function App() {
   return (
 
@@ -30,9 +27,7 @@ function App() {
          </Route>
 
         <Route path="bill" element={<Bill />} />
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/app' element={<App />}>
-        </Route>
+        <Route path="bill/payment" element={<Payment />} />
 
       </Routes>
     </>

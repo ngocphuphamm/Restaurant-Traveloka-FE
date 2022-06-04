@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Search from './search';
 import Auth from "../Auth/auth";
+import "../../assets/css/home.css";
 
 export default function NavbarApp() {
  
