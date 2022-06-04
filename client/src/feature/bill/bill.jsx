@@ -1,106 +1,174 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import SideBarBill from "../bill/sideBarBill";
-import {useState} from "react"
-const Bill = ({ cart }) => {
-  const [infoUser,setInfoUser] = useState({
-        nameBook : "",
-        addressBook : "",
-        phoneBook : 0
+import { useState,useEffect } from "react"
+const Bill = () => {
+  const navigate = useNavigate();
+  const [infoUser, setInfoUser] = useState({
+    nameBook: "",
+    emailBook: "",
+    phoneBook: "",
+    addressBook: "",
   })
+
+  const handleOnClickSetLocal = () => {
+    if (infoUser.nameBook === "" || infoUser.emailBook === "" || infoUser.phoneBook === 0 || infoUser.addressBook === "" ) {
+      alert("VUI LÒNG NHẬP THÔNG TIN ĐẦY ĐỦ")
+      console.log(infoUser);
+    }
+    else if ((infoUser.phoneBook).length <= 10)
+    {
+      alert("VUI LÒNG NHẬP SỐ ĐIỆN THOẠI ĐÚNG");
+    }
+    else {
+      window.localStorage.setItem('infoUserBook', JSON.stringify(infoUser));
+      navigate("/bill/payment")
+
+    }
+  }
+
+  const handleChangeInfoBook = (e) => {
+    const value = e.target.value;
+    setInfoUser({
+      ...infoUser,
+      [e.target.name]: value
+    });
+  }
+  const renderSuggestLogin = () => {
+    const info = JSON.parse(window.localStorage.getItem('accessToken'));
+    if (!info) {
+      return (
+        <div className="back-login checkout-item">
+          Bạn đã có tài khoản?{" "}
+          <a href={`${process.env.REACT_APP_PROFILE}`} className="login">
+            Đăng nhập
+          </a>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="back-login checkout-item">
+
+        </div>
+      )
+    }
+  }
+  useEffect(()=>{
+    const infoUserLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
+    if(infoUserLocal) {
+      setInfoUser((infoUser)=>({ 
+        ...infoUser,
+        nameBook: infoUserLocal.nameBook,
+        emailBook : infoUserLocal.emailBook,
+        phoneBook: infoUserLocal.phoneBook ,
+        addressBook : infoUserLocal.addressBook
+      }))
+
+    }
+  },[])
+
   return (
-    <body>
-      <div className="main">
-        <div className="grid">
-          <div className="checkout">
-            <div className="checkout-info">
-              <div className="checkout-logo-text checkout-item">
-                <Link to="/">
-                  {" "}
-                  <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg" alt=""></img>
-                </Link>
-              </div>
-              <ul className="checkout-breadcrumb checkout-item">
-                <li className="breadcrumb-item">
-                  <a href="/cart.html" className="text-link cart">
-                    Giỏ hàng{" "}
-                  </a>
-                  <i className="icon-link bx bx-chevron-right"></i>
-                </li>
-                <li className="breadcrumb-item">
-                  <span className="text-link">Thông tin giao hàng</span>
-                  <i className="icon-link bx bx-chevron-right"></i>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href=""  className="cart text-link">
-                    {" "}
-                    Phương thức thanh toán{" "}
-                  </a>
-                </li>
-              </ul>
-              <div className="checkout-text checkout-item">
-                Thông tin giao hàng
-              </div>
-              <div className="back-login checkout-item">
-                Bạn đã có tài khoản?{" "}
-                <a href="/login" className="login">
-                  Đăng nhập
+
+    <div className="main">
+      <div className="grid">
+        <div className="checkout">
+          <div className="checkout-info">
+            <div className="checkout-logo-text checkout-item">
+              <Link to="/">
+                {" "}
+                <img src="https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/3/30bf6c528078ba28d34bc3e37d124bdb.svg" alt=""></img>
+              </Link>
+            </div>
+            <ul className="checkout-breadcrumb checkout-item">
+              <li className="breadcrumb-item">
+                <a href="/cart.html" className="text-link cart">
+                  Giỏ hàng{" "}
                 </a>
-              </div>
-              <form action="" className="form-info checkout-item">
-                <div class="form-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Họ Và Tên"
-                  ></input>
-                </div>
+                <i className="icon-link bx bx-chevron-right"></i>
+              </li>
+              <li className="breadcrumb-item">
+                <span className="text-link">Thông tin giao hàng</span>
+                <i className="icon-link bx bx-chevron-right"></i>
+              </li>
+              <li className="breadcrumb-item">
+                <span href="" className="cart text-link">
+                  {" "}
+                  Phương thức thanh toán{" "}
+                </span>
+              </li>
+            </ul>
+            <div className="checkout-text checkout-item">
+              Thông tin giao hàng
+            </div>
 
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="inputEmail4"
-                      placeholder="Email"
-                    ></input>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="inputPassword4"
-                      placeholder="Password"
-                    ></input>
-                  </div>
-                </div>
-
+            {renderSuggestLogin()}
+            <form action="" className="form-info checkout-item">
+              <div className="form-group">
                 <input
                   type="text"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Địa chỉ"
+                  className="form-control"
+                  placeholder="Họ Và Tên"
+                  name="nameBook"
+                  defaultValue={infoUser.nameBook}
+                  onChange={handleChangeInfoBook}
                 ></input>
-                <small></small>
+              </div>
 
-                <div className="pay form-item">
-                  <a href="/cart.html" className="cart">
-                    Giỏ hàng
-                  </a>
-                  <Link to="/bill/payment">
-                        <button className="btnPay">
-                          Tiếp tục đến phương thức thanh toán
-                        </button>
-                  </Link>
+              <div className="form-row">
+                <div className="form-group col-md-6">
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="inputEmail4"
+                    placeholder="Email"
+                    name="emailBook"
+                    defaultValue={infoUser.emailBook}
+                    onChange={handleChangeInfoBook}
+                  ></input>
                 </div>
-              </form>
-            </div>
-                <SideBarBill></SideBarBill>
+                <div className="form-group col-md-6">
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="Số Điện Thoại"
+                    name="phoneBook"
+                    defaultValue={infoUser.phoneBook}
+                    onChange={handleChangeInfoBook}
+                  ></input>
+                </div>
+              </div>
+
+              <input
+                type="text"
+                className="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Địa chỉ"
+                name="addressBook"
+                defaultValue={infoUser.addressBook}
+                onChange={handleChangeInfoBook}
+              ></input>
+              <small></small>
+
+              <div className="pay form-item">
+                <a href="/cart.html" className="cart">
+                  Giỏ hàng
+                </a>
+
+                <button className="btnPay" type="button" onClick={handleOnClickSetLocal}>
+                  Tiếp tục đến phương thức thanh toán
+                </button>
+
+              </div>
+            </form>
           </div>
+          <SideBarBill></SideBarBill>
         </div>
       </div>
-    </body>
+    </div>
+
   );
 };
 export default globalStateAndAction(Bill);

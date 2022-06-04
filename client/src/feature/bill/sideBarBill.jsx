@@ -8,20 +8,20 @@ function SideBarBill({cart})
     const [voucherCode, setVoucherCode] = useState('');
     let amount = 0;
     useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_VOUCHER}`, {
-                headers: {
-                    user_id: `ngocphu`,
-                    partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
-                },
-            })
-            .then(function (response) {
-                setVoucher(response.data.data.vouchers);
+        // axios
+        //     .get(`${process.env.REACT_APP_VOUCHER}`, {
+        //         headers: {
+        //             user_id: `ngocphu`,
+        //             partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
+        //         },
+        //     })
+        //     .then(function (response) {
+        //         setVoucher(response.data.data.vouchers);
 
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     }, []);
 
     const renderFood = (foods = cart.Carts) => {
@@ -72,7 +72,7 @@ function SideBarBill({cart})
         <div className="checkout-bill">
             <div className="checkout-product">{renderFood()}</div>
             <div className="payment">
-                <select class="form-select" aria-label="Default select example"
+                <select className="form-select" aria-label="Default select example"
                     onChange={(event) => changeCode(event.target.value)}
                     value={voucherCode} >
                     <option selected >Chọn Voucher</option>
