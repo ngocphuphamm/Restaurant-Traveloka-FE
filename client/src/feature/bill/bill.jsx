@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import SideBarBill from "../bill/sideBarBill";
+import {useState} from "react"
 const Bill = ({ cart }) => {
-  
+  const [infoUser,setInfoUser] = useState({
+        nameBook : "",
+        addressBook : "",
+        phoneBook : 0
+  })
   return (
     <body>
       <div className="main">
@@ -83,9 +88,11 @@ const Bill = ({ cart }) => {
                   <a href="/cart.html" className="cart">
                     Giỏ hàng
                   </a>
-                  <button type="submit" className="btnPay">
-                    Tiếp tục đến phương thức thanh toán
-                  </button>
+                  <Link to="/bill/payment">
+                        <button className="btnPay">
+                          Tiếp tục đến phương thức thanh toán
+                        </button>
+                  </Link>
                 </div>
               </form>
             </div>
