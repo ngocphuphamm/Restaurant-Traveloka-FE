@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import globalStateAndAction from "../../container/global.state"
-function SideBarBill({cart})
+import restaurantApi from "../../api/restaurant";
+function SideBarBill({cart,idRestaurant})
 {
     const [voucher, setVoucher] = useState([]);
-    const [amountSale, setAmountSale] = useState('');
+    const [amountSale, setAmountSale] = useState();
     const [voucherCode, setVoucherCode] = useState('');
+    const [idStaff, setIdStaff] = useState('');
     let amount = 0;
+    const fetchRestaurant = async () => {
+        
+        const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
+        await setIdStaff(res.data.idStaff)
+    }
     useEffect(() => {
+        fetchRestaurant()
+        const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+        const user_id = infoUser.sub;
         axios
             .get(`${process.env.REACT_APP_VOUCHER}`, {
                 headers: {
-                    user_id: `ngocphu`,
-                    partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
+                    // user_id: user_id,
+                    // partner_id: idStaff,
+                     user_id: "ngocphu",
+                    partner_id: "082BE41E-5C2E-4A7E-BD55-0D73F8422654",
                 },
             })
             .then(function (response) {
                 setVoucher(response.data.data.vouchers);
-
             })
             .catch(function (error) {
                 console.log(error);
@@ -50,48 +61,59 @@ function SideBarBill({cart})
             );
         });
     };
-    const changeCode = (newCode) => {
-
-        setVoucherCode(newCode);
-        axios
-            .get(`http://128.199.241.206:8080/api/v1/user/voucher/check-condition?amount=${amount}&code=${newCode}&typeVoucher=nha-hang`, {
-                headers: {
-                    user_id: `ngocphu`,
-                    partner_id: `92e07c79-20b1-4dfa-8a36-46fd1783aa42`,
-                },
-            })
-            .then(function (response) {
-
-                setAmountSale(response.data.data.amount);
-            })
-            .catch(function (error) {
-                alert("SỐ TIỀN MUA KHÔNG ĐỦ ÁP DỤNG VOUCHER");
-            });
+    const changeCode = async(newCode) => {
+        if(newCode!=="DEFAULT")
+        {
+           await setVoucherCode(newCode);
+            await axios
+                .get(`${process.env.REACT_APP_CHECKVOUCHER}?amount=${amount}&code=${newCode}&typeVoucher=eats`, {
+                    headers: {
+                        user_id: `ngocphu`,
+                        partner_id: `082BE41E-5C2E-4A7E-BD55-0D73F8422654`,
+                    },
+                })
+                .then( function (response) {
+    
+                      setAmountSale(response.data.data.amount);
+                      
+                })
+                .catch(function (error) {
+                    alert("SỐ TIỀN MUA KHÔNG ĐỦ ÁP DỤNG VOUCHER");
+                });
+        }
+        else
+        {
+            await setAmountSale(amount);
+        }
+      
     }
     return (
         <div className="checkout-bill">
             <div className="checkout-product">{renderFood()}</div>
             <div className="payment">
-                <select class="form-select" aria-label="Default select example"
+                <select className="form-select" aria-label="Default select example"
                     onChange={(event) => changeCode(event.target.value)}
-                    value={voucherCode} >
-                    <option selected >Chọn Voucher</option>
+                    defaultValue={'DEFAULT'} >
+                    <option value="DEFAULT"  >Chọn Voucher</option>
                     {
                         voucher.map((el, index) => {
-
-
-                            return (
+                         return (
                                 <>
                                     <option key={index} value={el.voucherCode} >{
                                         el.title
                                     }</option>
                                 </>
                             )
-
                         })
                     }
 
                 </select>
+                <div className="payment-money">
+                    <div className="total">
+                        <div className="total-text">Tổng Tiền:</div>
+                        <div className="total-text total-money">{amount.toLocaleString()},000 VND</div>
+                    </div>
+                </div>
                 <div className="payment-money">
                     <div className="total">
                         <div className="total-text">Phí vận chuyển:</div>
@@ -100,7 +122,7 @@ function SideBarBill({cart})
                 </div>
                 <div className="payment-total total">
                     <div className="total-text">Tổng cộng:</div>
-                    <div className="total-text total-money">{amount ? (amount + 50).toLocaleString() + ",000 VND" : 0}</div>
+                    <div className="total-text total-money">{amountSale ? (amountSale + 50).toLocaleString() + ",000 VND" : (amount +50).toLocaleString() + ",000 VND"}</div>
                 </div>
             </div>
         </div>
