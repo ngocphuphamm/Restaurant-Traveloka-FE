@@ -103,12 +103,14 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
           
           let customRequestVoucher = {
             "typeVoucher" : "EATS",
-             "orderId" : infoUserBook.orderIdVoucher
+             "orderId" : infoUserBook.orderIdVoucher,
+             
           }
            await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`,customRequestVoucher,{
             headers: {
               user_id: `${user_id}`,
               partner_id: `${idStaff}`,
+              app_id : "vy01",
             },
           })
           window.localStorage.removeItem('infoUserBook');
@@ -145,7 +147,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
 
     }
     else if (infoUserBook.payment === "PM03") {
-
+        navigate("/bill/payment/stripe");
     }
     else {
       alert("VUI LÒNG CHỌN PHƯƠNG THỨC THANH TOÁN")
@@ -166,6 +168,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
         headers: {
           user_id: user_id,
           partner_id: idStaff,
+          app_id : "vy01"
         },
       })
   }
