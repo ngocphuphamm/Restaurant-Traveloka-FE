@@ -2,7 +2,6 @@ import "../../assets/css/payment.css";
 import { Link, useNavigate } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import { useState, useEffect } from "react";
-import axiosMethod from '../../api/axiosmethod';
 import restaurantApi from "../../api/restaurant";
 import axios from "axios";
 const Payment = ({ cart, numberCart, DeleteAllCart }) => {
@@ -36,6 +35,10 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
   const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
   useEffect(() => {
+    if(!info)
+    {
+      navigate("/bill");
+    }
     setInfoUserBook(info);
     fetchRestaurant();
   }, [])
@@ -80,6 +83,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
     })
     if (infoUserBook.payment === "PM02") {
       const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+      // axios post cho vinh phan con thieu 
       if (infoLogin) {
         let customData = {
           nameBook: infoUserBook.infoUser.nameBook,
@@ -136,8 +140,6 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
         }
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
         if (res.data.success === true) {
-
-
 
           DeleteAllCart()
           alert("THANH TOÁN THÀNH CÔNG !")
