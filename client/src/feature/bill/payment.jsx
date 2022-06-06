@@ -1,36 +1,44 @@
 import "../../assets/css/payment.css";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import { useState, useEffect } from "react";
 import axiosMethod from '../../api/axiosmethod';
+import restaurantApi from "../../api/restaurant";
 import axios from "axios";
-const Payment = ({ cart,numberCart,DeleteAllCart }) => {
+const Payment = ({ cart, numberCart, DeleteAllCart }) => {
   const navigate = useNavigate();
+  const [idStaff, setIdStaff] = useState('');
   const radio = [
     {
       payment: "PM02",
-      image : "https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=1",
-      name : "Thanh toán khi nhận hàng (COD)"
+      image: "https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=1",
+      name: "Thanh toán khi nhận hàng (COD)"
     },
     {
       payment: "PM03",
-      image : "https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=1",
-      name : "Thanh Toán Stripe",
+      image: "https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=1",
+      name: "Thanh Toán Stripe",
     },
   ];
+  const fetchRestaurant = async () => {
+
+    const res = await restaurantApi.getRestaurant(`${cart.idRestaurant}`);
+    await setIdStaff(res.data.idStaff)
+  }
   const [infoUserBook, setInfoUserBook] = useState({
     amountBill: 0,
     idStaff: "",
     infoUser: {},
     voucherCode: "",
-    payment : ""
+    payment: ""
   })
+
   const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
   useEffect(() => {
     setInfoUserBook(info);
-  
-  },[])
+    fetchRestaurant();
+  }, [])
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {
@@ -58,77 +66,125 @@ const Payment = ({ cart,numberCart,DeleteAllCart }) => {
     });
   };
 
-  const handePayment = async ()=>{
-      let detailTransaction = [];
-      cart.Carts.map(async(el)=>{
-          let customData ={ 
-            idFood: el.idFood, 
-            qty : el.quantity, 
-            intoMoney  : (Number(el.priceFood) * Number(el.quantity)),
-            idMenu : cart.idMenu,
-            idRestaurant : cart.idRestaurant,
+  const handePayment = async () => {
+    let detailTransaction = [];
+    cart.Carts.map(async (el) => {
+      let customData = {
+        idFood: el.idFood,
+        qty: el.quantity,
+        intoMoney: (Number(el.priceFood) * Number(el.quantity)),
+        idMenu: cart.idMenu,
+        idRestaurant: cart.idRestaurant,
+      }
+      detailTransaction.push(customData);
+    })
+    if (infoUserBook.payment === "PM02") {
+      const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+      if (infoLogin) {
+        let customData = {
+          nameBook: infoUserBook.infoUser.nameBook,
+          addressBook: infoUserBook.infoUser.addressBook,
+          emailBook: infoUserBook.infoUser.emailBook,
+          phoneBook: infoUserBook.infoUser.phoneBook,
+          status: 0,
+          shipping: 50,
+          sumQty: cart.numberCart,
+          totalMoney: infoUserBook.amountBill,
+          idPayment: infoUserBook.payment,
+          idCustomer: infoLogin.sub,
+          detailTransaction
+        }
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+
+        if (res.data.success === true) {
+          const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+          let user_id = infoUser.sub;
+          const infoUserBook = JSON.parse(window.localStorage.getItem('infoUserBook'));
+          
+          let customRequestVoucher = {
+            "typeVoucher" : "EATS",
+             "orderId" : infoUserBook.orderIdVoucher
           }
-          detailTransaction.push(customData);
-      })
-      if(infoUserBook.payment === "PM02")
-      {
-        const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
-        if(infoLogin)
-        {
-          let customData = {
-            nameBook : infoUserBook.infoUser.nameBook,
-            addressBook : infoUserBook.infoUser.addressBook,
-            emailBook : infoUserBook.infoUser.emailBook,
-            phoneBook : infoUserBook.infoUser.phoneBook,
-            status : 0 , 
-            shipping : 50,
-            sumQty : cart.numberCart,
-            totalMoney : infoUserBook.amountBill,
-            idPayment : infoUserBook.payment,
-            idCustomer : infoLogin.sub ,
-            detailTransaction    
-         }
-          const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`,customData);
+           await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`,customRequestVoucher,{
+            headers: {
+              user_id: `${user_id}`,
+              partner_id: `${idStaff}`,
+            },
+          })
+          window.localStorage.removeItem('infoUserBook');
 
-          if(res.data.success === true) {
-            DeleteAllCart()
-            alert("THANH TOÁN THÀNH CÔNG !")
-            navigate("/")
-          }        
-        }
-        else
-        {
-          let customData = {
-            nameBook : infoUserBook.infoUser.nameBook,
-            addressBook : infoUserBook.infoUser.addressBook,
-            emailBook : infoUserBook.infoUser.emailBook,
-            phoneBook : infoUserBook.infoUser.phoneBook,
-            status : 0 , 
-            shipping : 50,
-            sumQty : cart.numberCart,
-            totalMoney : infoUserBook.amountBill,
-            idPayment : infoUserBook.payment,
-            idCustomer :  null ,
-            detailTransaction   
-         }
-         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`,customData);
-         if(res.data.success === true) {
           DeleteAllCart()
-           alert("THANH TOÁN THÀNH CÔNG !")
-           navigate("/")
-         }     
+          alert("THANH TOÁN THÀNH CÔNG !")
+          navigate("/")
         }
+      }
+      else {
+        let customData = {
+          nameBook: infoUserBook.infoUser.nameBook,
+          addressBook: infoUserBook.infoUser.addressBook,
+          emailBook: infoUserBook.infoUser.emailBook,
+          phoneBook: infoUserBook.infoUser.phoneBook,
+          status: 0,
+          shipping: 50,
+          sumQty: cart.numberCart,
+          totalMoney: infoUserBook.amountBill,
+          idPayment: infoUserBook.payment,
+          idCustomer: null,
+          detailTransaction
+        }
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+        if (res.data.success === true) {
 
-      }
-      else if(infoUserBook.payment === "PM03")
-      {
 
+
+          DeleteAllCart()
+          alert("THANH TOÁN THÀNH CÔNG !")
+          navigate("/")
+        }
       }
-      else 
+
+    }
+    else if (infoUserBook.payment === "PM03") {
+
+    }
+    else {
+      alert("VUI LÒNG CHỌN PHƯƠNG THỨC THANH TOÁN")
+    }
+  }
+  const destroyVoucher = (orderId, idStaff) => {
+    const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+    let user_id = null;
+    if (infoUser) {
+      user_id = infoUser.sub;
+    }
+    let bodyRequest = {
+      "typeVoucher": "EATS",
+      orderId
+    }
+    axios.post(`${process.env.REACT_APP_DESTROYVOUCHER}`, bodyRequest,
       {
-        alert("VUI LÒNG CHỌN PHƯƠNG THỨC THANH TOÁN")
-      }
-           
+        headers: {
+          user_id: user_id,
+          partner_id: idStaff,
+        },
+      })
+  }
+  const handleBackBill = async () => {
+    const infoUserLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
+    if (infoUserLocal.orderIdVoucher) {
+      await destroyVoucher(infoUserLocal.orderIdVoucher, infoUserLocal.idStaff);
+      let custom = {
+        infoUser: infoUserLocal.infoUser,
+        amountBill: 0,
+        idStaff: infoUserLocal.idStaff,
+
+      };
+      await window.localStorage.setItem('infoUserBook',JSON.stringify(custom));
+      navigate("/bill");
+    }
+    else {
+      navigate("/bill");
+    }
   }
   return (
     <body>
@@ -171,20 +227,20 @@ const Payment = ({ cart,numberCart,DeleteAllCart }) => {
                 {radio.map((el, index) => {
                   return (
                     <div
-                    key={index}
+                      key={index}
                     >
                       <div className="payment-cus payment-cus-1">
-                        <input  
-                            	type="radio"
-                              name="payment"
-                              checked={
-                                  infoUserBook.payment === el.payment
-                              }
-                              onChange={() =>
-                                setInfoUserBook({...infoUserBook,payment:el.payment})
-                              }
-                        
-                        
+                        <input
+                          type="radio"
+                          name="payment"
+                          checked={
+                            infoUserBook.payment === el.payment
+                          }
+                          onChange={() =>
+                            setInfoUserBook({ ...infoUserBook, payment: el.payment })
+                          }
+
+
                         />
                         <div className="payment-cus-box">
                           <div className="box-payment-cus">
@@ -193,7 +249,7 @@ const Payment = ({ cart,numberCart,DeleteAllCart }) => {
                               alt=""
                             />
                             <div className="payment-cus-text">
-                                {el.name}
+                              {el.name}
                             </div>
                           </div>
 
@@ -205,11 +261,11 @@ const Payment = ({ cart,numberCart,DeleteAllCart }) => {
                 })}
 
                 <div className="pay form-item">
-                  <Link to="/bill">
-                    <button className="btn btn-secondary">
-                      Quay lại thông tin giao hàng
-                    </button>
-                  </Link>
+
+                  <button className="btn btn-secondary" onClick={handleBackBill}>
+                    Quay lại thông tin giao hàng
+                  </button>
+
                   <button type="butinfoUserBook.amountBill.toLocaleString()},000 VNDton" className="btn btn-info" onClick={handePayment}>
                     Thanh Toán
                   </button>
@@ -219,7 +275,7 @@ const Payment = ({ cart,numberCart,DeleteAllCart }) => {
             <div className="checkout-bill">
               <div className="checkout-product">{renderFood()}</div>
               <div className="payment">
-              <div className="payment-total total">
+                <div className="payment-total total">
                   <div className="total-text">
                     <h6>Tổng Số Lượng:</h6></div>
                   <div className="total-text total-money"><h6>{cart.numberCart}</h6></div>

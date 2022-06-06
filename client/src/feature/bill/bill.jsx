@@ -3,6 +3,7 @@ import globalStateAndAction from "../../container/global.state";
 import { useState, useEffect } from "react"
 import restaurantApi from "../../api/restaurant";
 import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
 const Bill = ({ cart, idRestaurant,numberCart }) => {
   const navigate = useNavigate();
   const [infoUser, setInfoUser] = useState({
@@ -16,7 +17,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
   const [voucherCode, setVoucherCode] = useState('');
   const [idStaff, setIdStaff] = useState('');
   let amount = 0;
-  const handleOnClickSetLocal = () => {
+  const handleOnClickSetLocal = async () => {
     if (infoUser.nameBook === "" || infoUser.emailBook === "" || infoUser.phoneBook === 0 || infoUser.addressBook === "") {
       alert("VUI LÒNG NHẬP THÔNG TIN ĐẦY ĐỦ");
 
@@ -25,14 +26,52 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
       alert("VUI LÒNG NHẬP SỐ ĐIỆN THOẠI ĐÚNG");
     }
     else {
-      let customData =  {
-        infoUser,
-        voucherCode,
-        idStaff,
-        amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+  
+      if(voucherCode !== "")
+      {
+        const idTS = uuidv4();
+        let bodyVoucherApply = {
+          code : voucherCode,
+          typeVoucher : "EATS",
+          transactionId : idTS ,
+          amount : amount
+        }
+        const infoUserLocal = JSON.parse(window.localStorage.getItem('accessToken'));
+        let user_id = null;
+        if(infoUserLocal)
+        {
+          user_id =  infoUserLocal.sub;
+        }
+      
+        const resVoucher = await axios.post(`${process.env.REACT_APP_APPLYVOUCHER}`,bodyVoucherApply,{
+          headers: {
+            user_id: `${user_id}`,
+            partner_id: `${idStaff}`,
+          },
+        })
+        let customData =  {
+          infoUser,
+          voucherCode,
+          idStaff,
+          orderIdVoucher : `${resVoucher.data.data.orderId}`,
+          transactionIdVoucher : idTS,
+          amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+        }
+        window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
+        navigate("/bill/payment")
+  
       }
-      window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
-      navigate("/bill/payment")
+      else
+      {
+        let customData =  {
+          infoUser,
+          idStaff,
+          amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+        }
+        window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
+        navigate("/bill/payment")
+      }
+     
 
     }
   }
@@ -80,26 +119,21 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
 
 
 
-  const fetchRestaurant = async () => {
 
-    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
-    await setIdStaff(res.data.idStaff)
-  }
-  useEffect(() => {
-    fetchRestaurant()
+  const handleRenderVoucher = async () =>{
     const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
     let user_id = null;
     if(infoUser)
     {
       user_id =  infoUser.sub;
     }
-    axios
+    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
+    await setIdStaff(res.data.idStaff)
+    await axios
       .get(`${process.env.REACT_APP_VOUCHER}`, {
         headers: {
-          // user_id: user_id,
-          // partner_id: idStaff,
-          user_id: "ngocphu",
-          partner_id: "082BE41E-5C2E-4A7E-BD55-0D73F8422654",
+          user_id: `${user_id}`,
+          partner_id: `${res.data.idStaff}`,
         },
       })
       .then(function (response) {
@@ -108,6 +142,10 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
       .catch(function (error) {
         console.log(error);
       });
+  }
+  useEffect( () => {
+    
+    handleRenderVoucher()
   }, []);
 
   const renderFood = (foods = cart.Carts) => {
@@ -139,11 +177,17 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
   const changeCode = async (newCode) => {
     if (newCode !== "DEFAULT") {
       await setVoucherCode(newCode);
+      const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+      let user_id = null;
+      if(infoUser)
+      {
+        user_id =  infoUser.sub;
+      }
       await axios
         .get(`${process.env.REACT_APP_CHECKVOUCHER}?amount=${amount}&code=${newCode}&typeVoucher=eats`, {
           headers: {
-            user_id: `ngocphu`,
-            partner_id: `082BE41E-5C2E-4A7E-BD55-0D73F8422654`,
+            user_id: user_id,
+            partner_id: idStaff,
           },
         })
         .then(function (response) {
@@ -159,6 +203,36 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
       await setAmountSale(amount);
     }
 
+  }
+  const renderVoucher = ()=>{
+    const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+    if(infoUser)
+    {
+      return(
+        <select className="form-select" aria-label="Default select example"
+        onChange={(event) => changeCode(event.target.value)}
+        defaultValue={'DEFAULT'} >
+        <option value="DEFAULT"  >Chọn Voucher</option>
+        {
+          voucher.map((el, index) => {
+            return (
+              <>
+                <option key={index} value={el.voucherCode} >{
+                  el.title
+                }</option>
+              </>
+            )
+          })
+        }
+  
+      </select>
+      )
+   
+    }
+    else
+    {
+       return(<div></div>) 
+    }
   }
   return (
 
@@ -260,23 +334,8 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
             <div className="checkout-product">{renderFood()}
             </div>
             <div className="payment">
-              <select className="form-select" aria-label="Default select example"
-                onChange={(event) => changeCode(event.target.value)}
-                defaultValue={'DEFAULT'} >
-                <option value="DEFAULT"  >Chọn Voucher</option>
-                {
-                  voucher.map((el, index) => {
-                    return (
-                      <>
-                        <option key={index} value={el.voucherCode} >{
-                          el.title
-                        }</option>
-                      </>
-                    )
-                  })
-                }
-
-              </select>
+              {renderVoucher()}
+              
               <div className="payment-money">
                 <div className="total">
                   <div className="total-text">Tổng Số Lượng:</div>
