@@ -1,8 +1,135 @@
 import "../../assets/css/payment.css";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
-import SideBarBill from "../bill/sideBarBill";
-const Bill = ({ cart }) => {
+import { useState, useEffect } from "react";
+import axiosMethod from '../../api/axiosmethod';
+import axios from "axios";
+const Payment = ({ cart,numberCart,DeleteAllCart }) => {
+  const navigate = useNavigate();
+  const radio = [
+    {
+      payment: "PM02",
+      image : "https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=1",
+      name : "Thanh toán khi nhận hàng (COD)"
+    },
+    {
+      payment: "PM03",
+      image : "https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=1",
+      name : "Thanh Toán Stripe",
+    },
+  ];
+  const [infoUserBook, setInfoUserBook] = useState({
+    amountBill: 0,
+    idStaff: "",
+    infoUser: {},
+    voucherCode: "",
+    payment : ""
+  })
+  const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
+
+  useEffect(() => {
+    setInfoUserBook(info);
+  
+  },[])
+
+  const renderFood = (foods = cart.Carts) => {
+    return foods.map((el, key) => {
+
+      return (
+        <div className="product-item">
+          <div className="item-img">
+            <img src={el.imageFood} alt="" className="img-product" />
+          </div>
+          <div className="item-info">
+            <div className="info-left">
+              <div className="info-name-product">{el.nameFood}</div>
+              l<div className="info-size-product">
+                <span>{el.quantity}</span>
+              </div>
+            </div>
+            <div className="info-right">
+              <div className="item-money">
+                {Number(el.quantity) * Number(el.priceFood)},000 VND
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const handePayment = async ()=>{
+      let detailTransaction = [];
+      cart.Carts.map(async(el)=>{
+          let customData ={ 
+            idFood: el.idFood, 
+            qty : el.quantity, 
+            intoMoney  : (Number(el.priceFood) * Number(el.quantity)),
+            idMenu : cart.idMenu,
+            idRestaurant : cart.idRestaurant,
+          }
+          detailTransaction.push(customData);
+      })
+      if(infoUserBook.payment === "PM02")
+      {
+        const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+        if(infoLogin)
+        {
+          let customData = {
+            nameBook : infoUserBook.infoUser.nameBook,
+            addressBook : infoUserBook.infoUser.addressBook,
+            emailBook : infoUserBook.infoUser.emailBook,
+            phoneBook : infoUserBook.infoUser.phoneBook,
+            status : 0 , 
+            shipping : 50,
+            sumQty : cart.numberCart,
+            totalMoney : infoUserBook.amountBill,
+            idPayment : infoUserBook.payment,
+            idCustomer : infoLogin.sub ,
+            detailTransaction    
+         }
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`,customData);
+
+          if(res.data.success === true) {
+            DeleteAllCart()
+            alert("THANH TOÁN THÀNH CÔNG !")
+            navigate("/")
+          }        
+        }
+        else
+        {
+          let customData = {
+            nameBook : infoUserBook.infoUser.nameBook,
+            addressBook : infoUserBook.infoUser.addressBook,
+            emailBook : infoUserBook.infoUser.emailBook,
+            phoneBook : infoUserBook.infoUser.phoneBook,
+            status : 0 , 
+            shipping : 50,
+            sumQty : cart.numberCart,
+            totalMoney : infoUserBook.amountBill,
+            idPayment : infoUserBook.payment,
+            idCustomer :  null ,
+            detailTransaction   
+         }
+         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`,customData);
+         if(res.data.success === true) {
+          DeleteAllCart()
+           alert("THANH TOÁN THÀNH CÔNG !")
+           navigate("/")
+         }     
+        }
+
+      }
+      else if(infoUserBook.payment === "PM03")
+      {
+
+      }
+      else 
+      {
+        alert("VUI LÒNG CHỌN PHƯƠNG THỨC THANH TOÁN")
+      }
+           
+  }
   return (
     <body>
       <div className="main">
@@ -30,68 +157,84 @@ const Bill = ({ cart }) => {
                   <i className="icon-link bx bx-chevron-right"></i>
                 </li>
                 <li className="breadcrumb-item">
-                  <a href="" className="cart text-link">
+                  <span href="" className="cart text-link">
                     {" "}
                     Phương thức thanh toán{" "}
-                  </a>
+                  </span>
                 </li>
               </ul>
-          
+
               <div className="checkout-text checkout-item">
                 Phương thức thanh toán
               </div>
-              <form action="" className="form-info checkout-item">
-                <div className="payment-cus payment-cus-1">
-                  <input type="radio" checked name="pm1" />
-                  <div className="payment-cus-box">
-                    <div className="box-payment-cus">
-                      <img
-                        src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=1"
-                        alt=""
-                      />
-                      <div className="payment-cus-text">
-                        Thanh toán khi nhận hàng (COD)
-                      </div>
-                    </div>
-
-                    <div className="payment-cus-text"></div>
-                  </div>
-                </div>
-                <div className="form-item">
-                  <div className="payment-cus payment-cus-1">
-                    <input type="radio" name="pm1" />
-                    <div className="payment-cus-box">
-                      <div className="box-payment-cus">
-                        <img
-                          src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=1"
-                          alt=""
+              <div className="form-info checkout-item">
+                {radio.map((el, index) => {
+                  return (
+                    <div
+                    key={index}
+                    >
+                      <div className="payment-cus payment-cus-1">
+                        <input  
+                            	type="radio"
+                              name="payment"
+                              checked={
+                                  infoUserBook.payment === el.payment
+                              }
+                              onChange={() =>
+                                setInfoUserBook({...infoUserBook,payment:el.payment})
+                              }
+                        
+                        
                         />
-                        <div className="payment-cus-text">
-                          Chuyển khoản qua ngân hàng
+                        <div className="payment-cus-box">
+                          <div className="box-payment-cus">
+                            <img
+                              src={el.image}
+                              alt=""
+                            />
+                            <div className="payment-cus-text">
+                                {el.name}
+                            </div>
+                          </div>
+
+                          <div className="payment-cus-text"></div>
                         </div>
                       </div>
-
-                      <div className="payment-cus-text"></div>
                     </div>
-                  </div>
-                </div>
+                  );
+                })}
+
                 <div className="pay form-item">
                   <Link to="/bill">
-                  <button   className="btn btn-secondary">
-                    Quay lại thông tin giao hàng
-                  </button>
+                    <button className="btn btn-secondary">
+                      Quay lại thông tin giao hàng
+                    </button>
                   </Link>
-                  <button type="submit" className="btn btn-info">
-                      Thanh Toán
+                  <button type="butinfoUserBook.amountBill.toLocaleString()},000 VNDton" className="btn btn-info" onClick={handePayment}>
+                    Thanh Toán
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
-            <SideBarBill></SideBarBill>
+            <div className="checkout-bill">
+              <div className="checkout-product">{renderFood()}</div>
+              <div className="payment">
+              <div className="payment-total total">
+                  <div className="total-text">
+                    <h6>Tổng Số Lượng:</h6></div>
+                  <div className="total-text total-money"><h6>{cart.numberCart}</h6></div>
+                </div>
+                <div className="payment-total total">
+                  <div className="total-text">
+                    <h6>Tổng cộng:</h6></div>
+                  <div className="total-text total-money"><h6>{infoUserBook.amountBill.toLocaleString()},000 VND</h6></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </body>
   );
 };
-export default globalStateAndAction(Bill);
+export default globalStateAndAction(Payment);

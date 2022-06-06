@@ -10,7 +10,8 @@ let INTIAL_STATE = {
     Carts: [],
     foods: [],
     idRestaurant: "",
-    msg: false
+    msg: false,
+    idMenu : ""
 }
 
 const cartReducer = (state = INTIAL_STATE, action) => {
@@ -34,9 +35,10 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                     nameFood: action.payload.nameFood,
                     imageFood: action.payload.urlImage,
                     priceFood: action.payload.priceFood,
-                    nameRestaurant: action.payload.nameRestaurant
+                    nameRestaurant: action.payload.nameRestaurant,
                 };
                 state.idRestaurant = action.payload.idRestaurant;
+                state.idMenu = action.payload.idMenu;
                 alert("THÊM VÀO GIỎ HÀNG THÀNH CÔNG 🥳")
                 state.Carts.push(cart);
                 state.numberCart += 1;
@@ -125,6 +127,7 @@ const cartReducer = (state = INTIAL_STATE, action) => {
                 Carts: [],
                 foods: [],
                 idRestaurant: "",
+                idMenu: "",
                 msg: false
 
             }

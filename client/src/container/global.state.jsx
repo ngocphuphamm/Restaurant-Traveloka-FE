@@ -6,7 +6,7 @@ export default function globalStateAndAction(name) {
 	const mapStateToProps = (state) => {
 		return {
             cart:state.cart,
-            idRestaurant : state.cart.idRestaurant
+            idRestaurant : state.cart.idRestaurant,
 		};
 	};
 
