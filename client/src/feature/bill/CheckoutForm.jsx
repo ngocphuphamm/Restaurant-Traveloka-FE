@@ -19,7 +19,7 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: `http://${window.location.host}/bill/payment/success`,
       },
     });
 
@@ -33,7 +33,24 @@ const CheckoutForm = () => {
       // site first to authorize the payment, then redirected to the `return_url`.
     }
   };
-
+  const CARD_ELEMENT_OPTIONS = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+    },
+  };
+  
   return (
   
      <form 
@@ -41,7 +58,7 @@ const CheckoutForm = () => {
      className="container mt-5"
      onSubmit={handleSubmit}
      >
-      <CardElement id="payment-element"  />
+      <PaymentElement />
       <button 
        	className="btn btn-dark mt-5"
          id="submit" 
