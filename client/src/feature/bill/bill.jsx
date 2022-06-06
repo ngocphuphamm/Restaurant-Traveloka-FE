@@ -47,6 +47,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
           headers: {
             user_id: `${user_id}`,
             partner_id: `${idStaff}`,
+            app_id : "vy01"
           },
         })
         let customData =  {
@@ -98,7 +99,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
     else {
       return (
         <div className="back-login checkout-item">
-
+                
         </div>
       )
     }
@@ -134,6 +135,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
         headers: {
           user_id: `${user_id}`,
           partner_id: `${res.data.idStaff}`,
+          app_id : "vy01"
         },
       })
       .then(function (response) {
@@ -188,6 +190,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
           headers: {
             user_id: user_id,
             partner_id: idStaff,
+            app_id : "vy01"
           },
         })
         .then(function (response) {
