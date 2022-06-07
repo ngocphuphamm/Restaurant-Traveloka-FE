@@ -41,7 +41,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
     }
     setInfoUserBook(info);
     fetchRestaurant();
-  }, [info,navigate,cart.idRestaurant])
+  }, [navigate,cart.idRestaurant])
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {

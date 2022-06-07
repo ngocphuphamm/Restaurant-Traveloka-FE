@@ -25,7 +25,7 @@ function Search() {
                 <Link 
                 key={index} 
                 className="col-xl-3 col-lg-4 col-md-4 col-12"
-                to={`/${item.idRestaurant}`}
+                to={`/restaurant/${item.idRestaurant}`}
                 >
                     <div className="single-product">
                         <div className="product-img">
@@ -58,8 +58,7 @@ function Search() {
   return (
     <section className="page-section bg-light" id="portfolio">
                     <div className="container">
-                        <div className="text-center">
-                            <h2 className="section-heading text-uppercase">Nhà hàng tiêu biểu</h2>
+                        <div className="text-center mt-5">
                             <h1 className="section-subheading text-muted line_h3">Nhà Hàng Tìm Kiếm</h1>
                         </div>
                         <div className="row">{renderRestaurant()}</div>
