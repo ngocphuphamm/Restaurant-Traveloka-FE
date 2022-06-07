@@ -2,7 +2,7 @@ import React from 'react'
 import foodtApi from "../../api/food"
 import{ useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useParams ,useNavigate} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AddToCart } from '../../redux/Cart/cart-action';
 import globalStateAndAction from '../../container/global.state';
 
@@ -10,34 +10,32 @@ function Menu({cart,SetMsg}) {
 
     const {id} = useParams() 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [menu, setMenu] = useState([]);
 
     useEffect(() => {
+        const getDataMenu =  async () => {       
+            try {
+              const res= await foodtApi.getMenuFood(`${id}`);
+              setMenu(res.data)
+            } catch(err) {
+                console.log(err)
+            }
+        };  
         getDataMenu();
-    }, []);
+    }, [id]);
 
   
     
-     const getDataMenu =  async () => {       
-        try {
-          const a = await foodtApi.getMenuFood(`${id}`);
-          setMenu(a.data)
-        } catch {
-          alert("loi API")
-        }
-    };  
+
 
     useEffect(() =>{
         if(cart.msg === true)
         {
             SetMsg();
             alert("Vui lòng thêm giỏ hàng đúng với nhà hàng ");
-            
-            window.location.redirect(`/foodRestaurant/${cart.idRestaurant}`)
-          
+            window.location.replace(`/foodRestaurant/${cart.idRestaurant}`)
         }
-    },[SetMsg, cart.msg])
+    },[SetMsg, cart.msg,cart.idRestaurant])
 
 
     

@@ -1,4 +1,4 @@
-import { DELETE_ALL_CART,ADD_TO_CART, GET_ALL_FOOD_REDUX, GET_NUMBER_CART, SET_MSG, INCREASE_QUANTITY, DECREASE_QUANTITY,DELETE_CART } from "./cart-type";
+import { DELETE_ALL_CART,ADD_TO_CART, GET_NUMBER_CART, SET_MSG, INCREASE_QUANTITY, DECREASE_QUANTITY,DELETE_CART } from "./cart-type";
 
 
 /* * numberCart: dùng lưu số lượng sản phẩm đã mua có trong giỏ hàng(Carts)
@@ -16,12 +16,6 @@ let INTIAL_STATE = {
 
 const cartReducer = (state = INTIAL_STATE, action) => {
     switch (action.type) {
-        case GET_ALL_FOOD_REDUX:
-            console.log(action.payload);
-            return {
-                ...state,
-                foods: action.payload
-            }
         case GET_NUMBER_CART:
             return {
                 ...state,

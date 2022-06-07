@@ -128,34 +128,34 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
 
 
 
-  const handleRenderVoucher = async () =>{
-    const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
-    let user_id = null;
-    if(infoUser)
-    {
-      user_id =  infoUser.sub;
-    }
-    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
-    await setIdStaff(res.data.idStaff)
-    await axios
-      .get(`${process.env.REACT_APP_VOUCHER}`, {
-        headers: {
-          user_id: `${user_id}`,
-          partner_id: `${res.data.idStaff}`,
-          app_id : "vy01"
-        },
-      })
-      .then(function (response) {
-        setVoucher(response.data.data.vouchers);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+
   useEffect( () => {
-    
+    const handleRenderVoucher = async () =>{
+      const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+      let user_id = null;
+      if(infoUser)
+      {
+        user_id =  infoUser.sub;
+      }
+      const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
+      await setIdStaff(res.data.idStaff)
+      await axios
+        .get(`${process.env.REACT_APP_VOUCHER}`, {
+          headers: {
+            user_id: `${user_id}`,
+            partner_id: `${res.data.idStaff}`,
+            app_id : "vy01"
+          },
+        })
+        .then(function (response) {
+          setVoucher(response.data.data.vouchers);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
     handleRenderVoucher()
-  }, []);
+  }, [idRestaurant]);
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {

@@ -19,11 +19,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
       name: "Thanh Toán Stripe",
     },
   ];
-  const fetchRestaurant = async () => {
 
-    const res = await restaurantApi.getRestaurant(`${cart.idRestaurant}`);
-    await setIdStaff(res.data.idStaff)
-  }
   const [infoUserBook, setInfoUserBook] = useState({
     amountBill: 0,
     idStaff: "",
@@ -35,12 +31,17 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
   const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
   useEffect(() => {
+    const fetchRestaurant = async () => {
+
+      const res = await restaurantApi.getRestaurant(`${cart.idRestaurant}`);
+      await setIdStaff(res.data.idStaff)
+    }
     if (!info) {
       navigate("/bill");
     }
     setInfoUserBook(info);
     fetchRestaurant();
-  }, [])
+  }, [info,navigate,cart.idRestaurant])
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {

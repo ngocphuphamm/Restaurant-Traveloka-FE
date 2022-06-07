@@ -45,7 +45,6 @@ export default function Search()  {
                   </div>
 
                   <div
-                    // onClick={seacrhAll}
                     className="header-search-btn"
                   >
                     <i className="header-search-btn-icon ti-search"></i>

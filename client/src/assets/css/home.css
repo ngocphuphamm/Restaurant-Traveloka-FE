@@ -207,6 +207,7 @@ padding:0;}
 }
 .ti-shopping-cart:before {
 	content: "\e60d";
+
 }
 .ti-shopping-cart-full:before {
 	content: "\e60e";

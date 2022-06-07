@@ -48,7 +48,7 @@ function PageCart({ idRestaurant,cart, IncreaseQuantity, DecreaseQuantity, Delet
                         <div class="price-wrap"> <var class="price">{TotalPrice(item.priceFood,item.quantity).toLocaleString()},000 VND</var></div>
                     </td>
                     <td class="text-right d-none d-md-block">
-                        <span href="" class="btn btn-light btn-round" 
+                        <span href="" class="btn btn-dark btn-round" 
                                        onClick={()=>DeleteCart(key)}>Xóa</span>
                     </td>
                 </tr>
@@ -81,7 +81,7 @@ function PageCart({ idRestaurant,cart, IncreaseQuantity, DecreaseQuantity, Delet
     }
     renderDetail();
     return (
-        <div class="container-fluid" style={{ marginTop: "200px" }}>
+        <div class="container-fluid mb-5" style={{ marginTop: "200px" }}>
             <div class="row">
                 <aside class="col-lg-9">
                     <div class="card">
@@ -114,33 +114,17 @@ function PageCart({ idRestaurant,cart, IncreaseQuantity, DecreaseQuantity, Delet
                     </div>
                 </aside>
                 <aside class="col-lg-3">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group"> <label>Have coupon?</label>
-                                    <div class="input-group"> <input type="text" class="form-control coupon" name="" placeholder="Coupon code"></input> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                   
                     <div class="card">
                         <div class="card-body">
-                            <dl class="dlist-align">
-                                <dt>Tổng Tiền : </dt>
-                                <dd class="text-right text-danger ml-3">Chưa áp dụng</dd>
-                            </dl>
-                            <dl class="dlist-align">
-                                <dt>Giảm Giá:</dt>
-                                <dd class="text-right text-danger ml-3">Chưa áp dụng</dd>
-                            </dl>
                             <dl class="dlist-align">
                                 <dt>Tổng Tiền:</dt>
                                 <dd class="text-right text-dark b ml-3"><strong>{TotalCart.toLocaleString()},000 VND</strong></dd>
                             </dl>
-                            {idRestaurant ?  <Link to={`/foodRestaurant/${idRestaurant}`}>  <button  class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link> :  <Link to="/">  <button  class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link>}
+                            {idRestaurant ?  <Link to={`/foodRestaurant/${idRestaurant}`}>  <button  class="btn btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link> :  <Link to="/">  <button  class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button></Link>}
                            
                             <hr></hr>
-                             {!nameRestaurant ? <div></div> : <Link to="/bill">  <button  class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Thanh Toán </button></Link>}
+                             {!nameRestaurant ? <div></div> : <Link to="/bill">  <button  class="btn btn-primary btn-square btn-main" data-abc="true"> Thanh Toán </button></Link>}
                          
                         </div>
                     </div>

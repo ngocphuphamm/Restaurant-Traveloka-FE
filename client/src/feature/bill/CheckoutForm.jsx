@@ -1,5 +1,5 @@
-import {useStripe, useElements, PaymentElement, CardElement} from '@stripe/react-stripe-js';
-import { Link, useNavigate } from "react-router-dom";
+import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
+import {  useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import restaurantApi from "../../api/restaurant";
@@ -19,19 +19,19 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
   })
 
   const infoUserBookLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
-  const fetchRestaurant = async () => {
 
-    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
-    await setIdStaff(res.data.idStaff)
-  }
   useEffect(() => {
+    const fetchRestaurant = async () => {
+
+      const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
+      await setIdStaff(res.data.idStaff)
+    }
     if (!infoUserBookLocal) {
       navigate("/bill");
-
     }
     fetchRestaurant();
     setInfoUserBook(infoUserBookLocal);
-  }, [])
+  }, [idStaff,infoUserBookLocal,navigate,idRestaurant])
 
 
   const postBill = async () => {
@@ -180,23 +180,6 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
     }
-  };
-  const CARD_ELEMENT_OPTIONS = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#aab7c4",
-        },
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-    },
   };
   
   return (

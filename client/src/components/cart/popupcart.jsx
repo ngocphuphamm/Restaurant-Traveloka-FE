@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-//
 import globalStateAndAction from '../../container/global.state';
 
 
-function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
+function PopupCart({cart,DeleteCart}) {
     const number = cart.numberCart;
 
     
@@ -16,7 +15,7 @@ function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
                 <li 
                 key={index}
                 className="header__cart-item">
-                    <img className="header__cart-img" src={item.imageFood}></img>
+                    <img className="header__cart-img" alt="" src={item.imageFood}></img>
                     <div className="header__cart-item-info">
                         <div className="header__cart-item-head">
                             <h5 className="header__cart-item-name">{item.nameFood}</h5>
@@ -60,7 +59,7 @@ function PopupCart({cart,DecreaseQuantity,DeleteCart}) {
                 <span className="header__cart-notice">{number}</span>
                 </Link>
                 <div className="header__cart-list">
-                    <img src="playstore.jpg" alt="" className="header__cart-no-cart-img"></img>
+                    <img src="playstore.jpg" alt="" className="header__cart-no-cart-img "></img>
                 
                     <h4 className="header__cart-heading">Sản phẩm đã thêm</h4>
                     <ul className="header__cart-list-item">

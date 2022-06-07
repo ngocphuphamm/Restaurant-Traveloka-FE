@@ -2513,8 +2513,7 @@ textarea.form-control-lg {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  -webkit-print-color-adjust: exact;
-          color-adjust: exact;
+
 }
 .form-check-input[type=checkbox] {
   border-radius: 0.25em;
@@ -11430,7 +11429,7 @@ p {
     padding-bottom: 0.8rem;
     border: none;
     background-color: white;
-    border-top: 4px solid rgba(1,148,243,1.00);
+    border-top: white;
     transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
   }
   #mainNav .navbar-brand {
@@ -11461,15 +11460,17 @@ p {
   }
 }
 header.masthead {
+  height:100px;
+  margin-top : 135px;
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
   color: #fff;
-  background-image: url("../img/2.png");
+  background-image: url("https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/147fa086281563.5d94adfe90d9b.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-position: center center;
-  background-size: cover;
+  background-position: center;
+  background-size: 1340px 509px,auto;
   /* color:  black; */
 }
 header.masthead .masthead-subheading {
@@ -15805,9 +15806,9 @@ Version:1.0
 .header_top{
   position: absolute;
   position: fixed;
-  margin-top: 72px;
+  margin-top: 69px;
   border-top: 0px !important;
-  background-color: #f6f6f6 !important;
+  background-color: #e3dfdfd9 !important;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: 100%;
 }

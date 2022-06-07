@@ -16,17 +16,18 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    const getdatarestaurant = async () => {
+      try {
+        const a = await restaurantApi.getRestaurant(`${id}`);
+        setlistrender(a.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+  
     getdatarestaurant();
-  }, []);
+  }, [id]);
 
-  const getdatarestaurant = async () => {
-    try {
-      const a = await restaurantApi.getRestaurant(`${id}`);
-      setlistrender(a.data);
-    } catch (error) {
-      alert(error);
-    }
-  };
 
 
 

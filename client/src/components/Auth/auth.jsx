@@ -11,7 +11,7 @@ function Auth(){
           <>
             <span
               onClick={async () => {
-                await window.location.replace(`${process.env.REACT_APP_PROFILE}`);
+                await window.location.replace(`${process.env.REACT_APP_PROFILE}profile/view`);
               }}
             >
               <svg
@@ -93,7 +93,7 @@ function Auth(){
               className="nav-link"
               href={`${process.env.REACT_APP_PROFILE}Login?redirect=${process.env.REACT_APP_FRONTEND}`}
             >
-              Login
+             Đăng Nhập
             </a>
           </li>
         );

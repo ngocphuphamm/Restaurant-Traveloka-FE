@@ -1,5 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
 import Search from './search';
 import Auth from "../Auth/auth";
 import "../../assets/css/home.css";
@@ -18,19 +17,10 @@ export default function NavbarApp() {
           </Link>
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+             
               <li className="nav-item">
-                <a className="nav-link" href="#services">
-                  Services
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#portfolio">
-                  Portfolio
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#about">
-                  About
+                <a className="nav-link" href= {`${process.env.REACT_APP_VOUCHERUSER}`}>
+                     VOUCHER
                 </a>
               </li>
               <Auth></Auth>
