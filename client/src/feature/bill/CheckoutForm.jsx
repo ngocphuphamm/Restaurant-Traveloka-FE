@@ -1,10 +1,157 @@
 import {useStripe, useElements, PaymentElement, CardElement} from '@stripe/react-stripe-js';
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import restaurantApi from "../../api/restaurant";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }) => {
   const stripe = useStripe();
   const elements = useElements();
 
+  const navigate = useNavigate();
+  const [idStaff, setIdStaff] = useState('');
+  const [infoUserBook, setInfoUserBook] = useState({
+    amountBill: 0,
+    idStaff: "",
+    infoUser: {},
+    voucherCode: "",
+    payment: ""
+  })
+
+  const infoUserBookLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
+  const fetchRestaurant = async () => {
+
+    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
+    await setIdStaff(res.data.idStaff)
+  }
+  useEffect(() => {
+    if (!infoUserBookLocal) {
+      navigate("/bill");
+
+    }
+    fetchRestaurant();
+    setInfoUserBook(infoUserBookLocal);
+  }, [])
+
+
+  const postBill = async () => {
+    let detailTransaction = [];
+    carts.map(async (el) => {
+      let customData = {
+        idFood: el.idFood,
+        qty: el.quantity,
+        intoMoney: (Number(el.priceFood) * Number(el.quantity)),
+        idMenu: idMenu,
+        idRestaurant: idRestaurant,
+      }
+      detailTransaction.push(customData);
+    })
+    const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+    if (infoLogin) {
+      if (infoUserBook.voucherCode) {
+        let customData = {
+          nameBook: infoUserBook.infoUser.nameBook,
+          addressBook: infoUserBook.infoUser.addressBook,
+          emailBook: infoUserBook.infoUser.emailBook,
+          phoneBook: infoUserBook.infoUser.phoneBook,
+          status: 0,
+          shipping: 50,
+          sumQty: numberCart,
+          totalMoney: infoUserBook.amountBill,
+          idPayment: "PM03",
+          idCustomer: infoLogin.sub,
+          detailTransaction
+        }
+        try{
+          await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+
+    
+          const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+          let user_id = infoUser.sub;
+
+          let customRequestVoucher = {
+            "typeVoucher": "EATS",
+            "orderId": infoUserBookLocal.orderIdVoucher,
+
+          }
+          await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`, customRequestVoucher, {
+            headers: {
+              user_id: `${user_id}`,
+              partner_id: `${idStaff}`,
+              app_id: "vy01",
+            },
+          })
+          DeleteAllCart()
+          window.localStorage.removeItem('infoUserBook');
+       
+          alert("THANH TOÁN THÀNH CÔNG !")
+        }
+        catch (err)
+        {
+          console.log(err)
+        }
+        
+      }
+      else {
+        let customData = {
+          nameBook: infoUserBook.infoUser.nameBook,
+          addressBook: infoUserBook.infoUser.addressBook,
+          emailBook: infoUserBook.infoUser.emailBook,
+          phoneBook: infoUserBook.infoUser.phoneBook,
+          status: 0,
+          shipping: 50,
+          sumQty: numberCart,
+          totalMoney: infoUserBook.amountBill,
+          idPayment: "PM03",
+          idCustomer: infoLogin.sub,
+          detailTransaction
+        }
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+        if (res.data.success === true) {
+
+          DeleteAllCart()
+          window.localStorage.removeItem('infoUserBook');
+       
+          alert("THANH TOÁN THÀNH CÔNG !")
+     
+        }
+      }
+    }
+    else {
+      let customData = {
+        nameBook: infoUserBook.infoUser.nameBook,
+        addressBook: infoUserBook.infoUser.addressBook,
+        emailBook: infoUserBook.infoUser.emailBook,
+        phoneBook: infoUserBook.infoUser.phoneBook,
+        status: 0,
+        shipping: 50,
+        sumQty: numberCart,
+        totalMoney: infoUserBook.amountBill,
+        idPayment: infoUserBook.payment,
+        idCustomer: null,
+        detailTransaction
+      }
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+      if (res.data.success === true) {
+
+        DeleteAllCart()
+        window.localStorage.removeItem('infoUserBook');
+     
+        alert("THANH TOÁN THÀNH CÔNG !")
+ 
+      }
+    }
+  }
+
+
+
+
+
+
   const handleSubmit = async (event) => {
+
+    postBill()
+    
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
@@ -19,7 +166,8 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `http://${window.location.host}/bill/payment/success`,
+        // return_url: `http://${window.location.host}/bill/payment/success`,
+        return_url: `http://${window.location.host}/`,
       },
     });
 

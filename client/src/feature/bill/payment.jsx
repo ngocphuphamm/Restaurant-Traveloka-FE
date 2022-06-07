@@ -2,7 +2,6 @@ import "../../assets/css/payment.css";
 import { Link, useNavigate } from "react-router-dom";
 import globalStateAndAction from "../../container/global.state";
 import { useState, useEffect } from "react";
-import axiosMethod from '../../api/axiosmethod';
 import restaurantApi from "../../api/restaurant";
 import axios from "axios";
 const Payment = ({ cart, numberCart, DeleteAllCart }) => {
@@ -36,6 +35,9 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
   const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
   useEffect(() => {
+    if (!info) {
+      navigate("/bill");
+    }
     setInfoUserBook(info);
     fetchRestaurant();
   }, [])
@@ -80,45 +82,71 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
     })
     if (infoUserBook.payment === "PM02") {
       const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+      // axios post cho vinh phan con thieu 
       if (infoLogin) {
-        let customData = {
-          nameBook: infoUserBook.infoUser.nameBook,
-          addressBook: infoUserBook.infoUser.addressBook,
-          emailBook: infoUserBook.infoUser.emailBook,
-          phoneBook: infoUserBook.infoUser.phoneBook,
-          status: 0,
-          shipping: 50,
-          sumQty: cart.numberCart,
-          totalMoney: infoUserBook.amountBill,
-          idPayment: infoUserBook.payment,
-          idCustomer: infoLogin.sub,
-          detailTransaction
-        }
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
-
-        if (res.data.success === true) {
-          const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
-          let user_id = infoUser.sub;
-          const infoUserBook = JSON.parse(window.localStorage.getItem('infoUserBook'));
-          
-          let customRequestVoucher = {
-            "typeVoucher" : "EATS",
-             "orderId" : infoUserBook.orderIdVoucher,
-             
+        if (infoUserBook.voucherCode) {
+          let customData = {
+            nameBook: infoUserBook.infoUser.nameBook,
+            addressBook: infoUserBook.infoUser.addressBook,
+            emailBook: infoUserBook.infoUser.emailBook,
+            phoneBook: infoUserBook.infoUser.phoneBook,
+            status: 0,
+            shipping: 50,
+            sumQty: cart.numberCart,
+            totalMoney: infoUserBook.amountBill,
+            idPayment: infoUserBook.payment,
+            idCustomer: infoLogin.sub,
+            detailTransaction
           }
-           await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`,customRequestVoucher,{
-            headers: {
-              user_id: `${user_id}`,
-              partner_id: `${idStaff}`,
-              app_id : "vy01",
-            },
-          })
-          window.localStorage.removeItem('infoUserBook');
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
 
-          DeleteAllCart()
-          alert("THANH TOÁN THÀNH CÔNG !")
-          navigate("/")
+          if (res.data.success === true) {
+            const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
+            let user_id = infoUser.sub;
+            const infoUserBook = JSON.parse(window.localStorage.getItem('infoUserBook'));
+
+            let customRequestVoucher = {
+              "typeVoucher": "EATS",
+              "orderId": infoUserBook.orderIdVoucher,
+
+            }
+            await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`, customRequestVoucher, {
+              headers: {
+                user_id: `${user_id}`,
+                partner_id: `${idStaff}`,
+                app_id: "vy01",
+              },
+            })
+            window.localStorage.removeItem('infoUserBook');
+
+            DeleteAllCart()
+            alert("THANH TOÁN THÀNH CÔNG !")
+            navigate("/")
+          }
         }
+        else {
+          let customData = {
+            nameBook: infoUserBook.infoUser.nameBook,
+            addressBook: infoUserBook.infoUser.addressBook,
+            emailBook: infoUserBook.infoUser.emailBook,
+            phoneBook: infoUserBook.infoUser.phoneBook,
+            status: 0,
+            shipping: 50,
+            sumQty: cart.numberCart,
+            totalMoney: infoUserBook.amountBill,
+            idPayment: infoUserBook.payment,
+            idCustomer: infoLogin.sub,
+            detailTransaction
+          }
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+          if (res.data.success === true) {
+
+            DeleteAllCart()
+            alert("THANH TOÁN THÀNH CÔNG !")
+            navigate("/")
+          }
+        }
+
       }
       else {
         let customData = {
@@ -137,8 +165,6 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
         if (res.data.success === true) {
 
-
-
           DeleteAllCart()
           alert("THANH TOÁN THÀNH CÔNG !")
           navigate("/")
@@ -147,7 +173,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
 
     }
     else if (infoUserBook.payment === "PM03") {
-        navigate("/bill/payment/stripe");
+      navigate("/bill/payment/stripe");
     }
     else {
       alert("VUI LÒNG CHỌN PHƯƠNG THỨC THANH TOÁN")
@@ -168,7 +194,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
         headers: {
           user_id: user_id,
           partner_id: idStaff,
-          app_id : "vy01"
+          app_id: "vy01"
         },
       })
   }
@@ -182,7 +208,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
         idStaff: infoUserLocal.idStaff,
 
       };
-      await window.localStorage.setItem('infoUserBook',JSON.stringify(custom));
+      await window.localStorage.setItem('infoUserBook', JSON.stringify(custom));
       navigate("/bill");
     }
     else {
