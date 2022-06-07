@@ -89,7 +89,7 @@ const Product = () => {
           <div className="container">
             <div className="text-center">
               <h2 className="section-heading text-uppercase">
-                Điểm đặt được ưa thích
+                DANH SÁCH NHÀ HÀNG TRAVELOKA
               </h2>
               <h3 className="section-subheading text-muted line_h3">
                 Trải nghiệm ngay khi đặt chỗ nhanh chóng.
