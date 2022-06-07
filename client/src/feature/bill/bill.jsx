@@ -34,7 +34,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
           code : voucherCode,
           typeVoucher : "EATS",
           transactionId : idTS ,
-          amount : amount
+          amount : amount*1000
         }
         const infoUserLocal = JSON.parse(window.localStorage.getItem('accessToken'));
         let user_id = null;
@@ -42,24 +42,31 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
         {
           user_id =  infoUserLocal.sub;
         }
-      
-        const resVoucher = await axios.post(`${process.env.REACT_APP_APPLYVOUCHER}`,bodyVoucherApply,{
-          headers: {
-            user_id: `${user_id}`,
-            partner_id: `${idStaff}`,
-            app_id : "vy01"
-          },
-        })
-        let customData =  {
-          infoUser,
-          voucherCode,
-          idStaff,
-          orderIdVoucher : `${resVoucher.data.data.orderId}`,
-          transactionIdVoucher : idTS,
-          amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+        try{
+          const resVoucher = await axios.post(`${process.env.REACT_APP_APPLYVOUCHER}`,bodyVoucherApply,{
+            headers: {
+              user_id: `${user_id}`,
+              partner_id: `${idStaff}`,
+              app_id : "vy01"
+            },
+          })
+          let customData =  {
+            infoUser,
+            voucherCode,
+            idStaff,
+            orderIdVoucher : `${resVoucher.data.data.orderId}`,
+            transactionIdVoucher : idTS,
+            amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+          }
+          window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
+          navigate("/bill/payment")
         }
-        window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
-        navigate("/bill/payment")
+        catch(err)
+        {
+          alert("Voucher Đang Được Áp Dụng Một Giao Dịch Khác")
+        }
+   
+       
   
       }
       else
@@ -185,6 +192,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
       {
         user_id =  infoUser.sub;
       }
+
       await axios
         .get(`${process.env.REACT_APP_CHECKVOUCHER}?amount=${amount}&code=${newCode}&typeVoucher=eats`, {
           headers: {

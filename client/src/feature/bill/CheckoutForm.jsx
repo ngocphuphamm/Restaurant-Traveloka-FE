@@ -1,12 +1,13 @@
-import { useStripe, useElements, PaymentElement, CardElement } from '@stripe/react-stripe-js';
-import globalStateAndAction from '../../components/cart/popupcart';
-import { useState, useEffect } from "react";
+import {useStripe, useElements, PaymentElement, CardElement} from '@stripe/react-stripe-js';
 import { Link, useNavigate } from "react-router-dom";
-import restaurantApi from "../../api/restaurant";
+import { useState, useEffect } from "react";
 import axios from "axios";
-const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
+import restaurantApi from "../../api/restaurant";
+
+const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }) => {
   const stripe = useStripe();
   const elements = useElements();
+
   const navigate = useNavigate();
   const [idStaff, setIdStaff] = useState('');
   const [infoUserBook, setInfoUserBook] = useState({
@@ -16,39 +17,38 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
     voucherCode: "",
     payment: ""
   })
-  const info = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
-  useEffect(() => {
-    if (!info) {
-      navigate("/bill");
-   
-    }
-    fetchRestaurant();
-    setInfoUserBook(info);
-  }, [])
-
-  // get staff
+  const infoUserBookLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
   const fetchRestaurant = async () => {
 
-    const res = await restaurantApi.getRestaurant(`${cart.idRestaurant}`);
+    const res = await restaurantApi.getRestaurant(`${idRestaurant}`);
     await setIdStaff(res.data.idStaff)
   }
+  useEffect(() => {
+    if (!infoUserBookLocal) {
+      navigate("/bill");
 
-  const postBill = () => {
+    }
+    fetchRestaurant();
+    setInfoUserBook(infoUserBookLocal);
+  }, [])
+
+
+  const postBill = async () => {
     let detailTransaction = [];
-    cart.Carts.map(async (el) => {
+    carts.map(async (el) => {
       let customData = {
         idFood: el.idFood,
         qty: el.quantity,
         intoMoney: (Number(el.priceFood) * Number(el.quantity)),
-        idMenu: cart.idMenu,
-        idRestaurant: cart.idRestaurant,
+        idMenu: idMenu,
+        idRestaurant: idRestaurant,
       }
       detailTransaction.push(customData);
-
-      const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
-      // axios post cho vinh phan con thieu 
-      if (infoLogin) {
+    })
+    const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+    if (infoLogin) {
+      if (infoUserBook.voucherCode) {
         let customData = {
           nameBook: infoUserBook.infoUser.nameBook,
           addressBook: infoUserBook.infoUser.addressBook,
@@ -56,22 +56,22 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
           phoneBook: infoUserBook.infoUser.phoneBook,
           status: 0,
           shipping: 50,
-          sumQty: cart.numberCart,
+          sumQty: numberCart,
           totalMoney: infoUserBook.amountBill,
-          idPayment: infoUserBook.payment,
+          idPayment: "PM03",
           idCustomer: infoLogin.sub,
           detailTransaction
         }
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+        try{
+          await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
 
-        if (res.data.success === true) {
+    
           const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
           let user_id = infoUser.sub;
-          const infoUserBook = JSON.parse(window.localStorage.getItem('infoUserBook'));
 
           let customRequestVoucher = {
             "typeVoucher": "EATS",
-            "orderId": infoUserBook.orderIdVoucher,
+            "orderId": infoUserBookLocal.orderIdVoucher,
 
           }
           await axios.put(`${process.env.REACT_APP_UPDATESTATUSVOUCHER}`, customRequestVoucher, {
@@ -81,12 +81,16 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
               app_id: "vy01",
             },
           })
-          window.localStorage.removeItem('infoUserBook');
-
           DeleteAllCart()
+          window.localStorage.removeItem('infoUserBook');
+       
           alert("THANH TOÁN THÀNH CÔNG !")
-          navigate("/")
         }
+        catch (err)
+        {
+          console.log(err)
+        }
+        
       }
       else {
         let customData = {
@@ -96,25 +100,58 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
           phoneBook: infoUserBook.infoUser.phoneBook,
           status: 0,
           shipping: 50,
-          sumQty: cart.numberCart,
+          sumQty: numberCart,
           totalMoney: infoUserBook.amountBill,
-          idPayment: infoUserBook.payment,
-          idCustomer: null,
+          idPayment: "PM03",
+          idCustomer: infoLogin.sub,
           detailTransaction
         }
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
         if (res.data.success === true) {
 
-
-
           DeleteAllCart()
+          window.localStorage.removeItem('infoUserBook');
+       
           alert("THANH TOÁN THÀNH CÔNG !")
-          navigate("/")
+     
         }
       }
-    })
+    }
+    else {
+      let customData = {
+        nameBook: infoUserBook.infoUser.nameBook,
+        addressBook: infoUserBook.infoUser.addressBook,
+        emailBook: infoUserBook.infoUser.emailBook,
+        phoneBook: infoUserBook.infoUser.phoneBook,
+        status: 0,
+        shipping: 50,
+        sumQty: numberCart,
+        totalMoney: infoUserBook.amountBill,
+        idPayment: infoUserBook.payment,
+        idCustomer: null,
+        detailTransaction
+      }
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+      if (res.data.success === true) {
+
+        DeleteAllCart()
+        window.localStorage.removeItem('infoUserBook');
+     
+        alert("THANH TOÁN THÀNH CÔNG !")
+ 
+      }
+    }
   }
+
+
+
+
+
+
   const handleSubmit = async (event) => {
+
+    postBill()
+    
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
@@ -129,11 +166,10 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: `http://${window.location.host}/bill/payment/success`,
+        // return_url: `http://${window.location.host}/bill/payment/success`,
+        return_url: `http://${window.location.host}/`,
       },
     });
-
-
 
 
     if (result.error) {
@@ -162,21 +198,21 @@ const CheckoutForm = ({ cart, numberCart, DeleteAllCart }) => {
       },
     },
   };
-
+  
   return (
-
-    <form
-      id="payment-form"
-      className="container mt-5"
-      onSubmit={handleSubmit}
-    >
+  
+     <form 
+     id="payment-form"
+     className="container mt-5"
+     onSubmit={handleSubmit}
+     >
       <PaymentElement />
-      <button
-        className="btn btn-dark mt-5"
-        id="submit"
-        disabled={!stripe}>Submit</button>
+      <button 
+       	className="btn btn-dark mt-5"
+         id="submit" 
+      disabled={!stripe}>Submit</button>
     </form>
 
   )
 };
-export default globalStateAndAction(CheckoutForm);
+export default CheckoutForm;

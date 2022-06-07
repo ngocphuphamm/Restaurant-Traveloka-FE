@@ -26,6 +26,7 @@ function App() {
           <Route path='foodRestaurant/:id' element={<Menu />}></Route>
           <Route path='cart' element={<PageCart />}></Route>
           <Route path="search" element={<Search />}></Route>
+
          </Route>
 
         <Route path="bill" element={<Bill />} />
