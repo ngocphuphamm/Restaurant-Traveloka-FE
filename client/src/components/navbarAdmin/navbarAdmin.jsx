@@ -1,5 +1,6 @@
 
 import "../../assets/admin/narbaradmin.css";
+import Auth from '../Auth/auth';
 
 export default function NavbarAppAdmin() {
  
@@ -17,19 +18,7 @@ export default function NavbarAppAdmin() {
 				</div></span>
           </div>
           <div className="topRight">
-            <div className="topbarIconContainer">
-              {/* <NotificationsNone /> */}
-              <span className="topIconBadge">2</span>
-            </div>
-            <div className="topbarIconContainer">
-              {/* <Language /> */}
-              <span className="topIconBadge">2</span>
-            </div>
-            <div className="topbarIconContainer" >
-                   
-         
-            </div>
-            {/* <Auth/> */}
+                <Auth/>
 
           </div>
         </div>

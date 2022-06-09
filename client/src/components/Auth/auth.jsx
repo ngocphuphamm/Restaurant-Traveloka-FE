@@ -74,7 +74,7 @@ function Auth(){
   
             <li className="nav-item">
               <button
-                class="btn btn-info ml-2 "
+                class="btn btn-info ml-3 btn-sm"
                 type="button"
                 onClick={async () => {
                   await localStorage.removeItem("accessToken");

@@ -17,6 +17,7 @@ import PageStripe from './feature/bill/pageStripe';
 import SuccessBill from './feature/bill/successBill';
 import LayoutAdmin from './layout/layoutAdmin';
 import Dashboard from "./feature/admin/dashboard/dashboard";
+import RestaurantAdmin from './feature/admin/Restaurant/restaurant';
 function App() {
   
   const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
@@ -41,8 +42,13 @@ function App() {
 
         <Route path="/admin" element={infoLogin?infoLogin.type === "PARTNER" ? <LayoutAdmin /> : <Navigate to="/"/>:<Navigate to="/"/>}>
 					<Route
-				    path=	{	"dashboard/:idRestaurant"}
+				    path=	"dashboard/:idRestaurant"
 						element={<Dashboard/>}
+					>
+					</Route>
+          <Route
+				    path=	"restaurant"
+						element={<RestaurantAdmin/>}
 					>
 					</Route>
 			</Route>
