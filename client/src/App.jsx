@@ -4,7 +4,7 @@ import './App.css';
 
 
 // react
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 import Product from "./feature/Product/product";
 import ProductDetails from "./feature/Product/productDetail";
 import Menu from "./feature/Menu/menuFood";
@@ -15,7 +15,12 @@ import Search from '../src/feature/search/search';
 import Payment from './feature/bill/payment';
 import PageStripe from './feature/bill/pageStripe';
 import SuccessBill from './feature/bill/successBill';
+import LayoutAdmin from './layout/layoutAdmin';
+import Dashboard from "./feature/admin/dashboard/dashboard";
 function App() {
+  
+  const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+
   return (
 
     <>
@@ -33,7 +38,17 @@ function App() {
         <Route path="bill/payment" element={<Payment />} />
         <Route path="bill/payment/stripe" element={<PageStripe />} />
         <Route path="bill/payment/success" element={<SuccessBill />} />
+
+        <Route path="/admin" element={infoLogin?infoLogin.type === "PARTNER" ? <LayoutAdmin /> : <Navigate to="/"/>:<Navigate to="/"/>}>
+					<Route
+				    path=	{	"dashboard/:idRestaurant"}
+						element={<Dashboard/>}
+					>
+					</Route>
+			</Route>
+
       </Routes>
+    
     </>
 
   );
