@@ -5,7 +5,6 @@ import "../../assets/css/home.css";
 
 export default function NavbarApp() {
   const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
-  console.log(infoLogin.type);
   return (
     <div>
       <nav
@@ -19,7 +18,7 @@ export default function NavbarApp() {
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
              {
-               infoLogin.type === "PARTNER" ? 
+               infoLogin?infoLogin.type === "PARTNER" ? 
                <Link to="/admin/dashboard/R01">
                       <li className="nav-item">
                 <span className="nav-link">
@@ -27,7 +26,7 @@ export default function NavbarApp() {
                 </span>
               </li>
                </Link>:
-               null
+               null : null
              }
               <li className="nav-item">
                 <a className="nav-link" href= {`${process.env.REACT_APP_VOUCHERUSER}`}>

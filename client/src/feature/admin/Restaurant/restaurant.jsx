@@ -54,7 +54,7 @@ export default function RestaurantAdmin() {
         {
             field: "nameRestaurant",
             headerName: "Tên Nhà Hàng",
-            width: 400,
+            width: 200,
             renderCell: (params) => {
                 return (
                     <div className="productListItem">
@@ -66,7 +66,7 @@ export default function RestaurantAdmin() {
         },
         { field: "addressRestaurant", headerName: "Địa Chỉ", width: 400 },
         {
-            field: "priceService",
+            field: "priceService" ,
             headerName: "Giá Dịch Vụ Khoảng",
             width: 150,
         },
@@ -82,7 +82,7 @@ export default function RestaurantAdmin() {
             renderCell: (params) => {
                 return (
                     <>
-                        <Link to={"/product/" + params.row.id}>
+                        <Link to={`/admin/restaurant/edit/${ params.row.idRestaurant}`}>
                             <button className="productListEdit">Sữa</button>
                         </Link>
                         <DeleteOutline

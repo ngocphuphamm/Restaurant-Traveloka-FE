@@ -18,6 +18,7 @@ import SuccessBill from './feature/bill/successBill';
 import LayoutAdmin from './layout/layoutAdmin';
 import Dashboard from "./feature/admin/dashboard/dashboard";
 import RestaurantAdmin from './feature/admin/Restaurant/restaurant';
+import EditRestaurantAdmin from './feature/admin/Restaurant/editRestaurant';
 function App() {
   
   const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
@@ -51,6 +52,12 @@ function App() {
 						element={<RestaurantAdmin/>}
 					>
 					</Route>
+          <Route
+            path="restaurant/edit/:idRestaurant"
+            element={<EditRestaurantAdmin/>}
+            >
+              
+            </Route>
 			</Route>
 
       </Routes>
