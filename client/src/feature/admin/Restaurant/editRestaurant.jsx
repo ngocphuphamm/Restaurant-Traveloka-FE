@@ -1,19 +1,25 @@
 import {productData} from "../../dummyData";
 import "../../../assets/admin/user.css"
 import {
-    CalendarToday,
-    LocationSearching,
-    MailOutline,
-    PermIdentity,
-    PhoneAndroid,
     Publish,
   } from "@mui/icons-material";
+  import FavoriteIcon from '@mui/icons-material/Favorite';
+  import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
   import { Link } from 'react-router-dom';
 import { useEffect,useState } from "react";
 import restaurantApi from "../../../api/restaurant";
 import { useParams } from "react-router-dom";
 export default function EditRestaurantAdmin()
 {
+    const [editRestaurant,setEditRestaurant] = useState(
+        {
+            nameRestaurant : "",
+            addressRestaurant : "",
+            priceService : 0,
+            descriptionRestaurant : "",
+        }
+    );
+    const [imagesRestaurants,setImagesRestaurant] = useState([]);
     const [infoRestaurant,setInfoRestaurant ] = useState();
     const {idRestaurant} = useParams();
     useEffect(()=>{
@@ -29,26 +35,10 @@ export default function EditRestaurantAdmin()
         }
         getDetailRestaurant();
     },[idRestaurant])
-    const renderImage = () =>{
-        console.log("hell")
-    //    return infoRestaurant.imagesRestaurants.imagesRestaurants((el)=>{
-    //         return(
-    //             <>
-    //                     <img
-    //                     className="userUpdateImg"
-    //                     src={el.urlRestaurant}
-    //                     alt=""
-    //                   />
-    //                   <label htmlFor="file">
-    //                     <Publish className="userUpdateIcon" />
-    //                   </label>
-                      
-    //                   <input type="file" id="file" style={{ display: "none" }} />
-    //             </>
-    //         )
-    //     })
+   
+    const handleChange= () =>{
+        
     }
-
     const renderRestaurant = ()=>{
         if(infoRestaurant)
         {
@@ -70,19 +60,37 @@ export default function EditRestaurantAdmin()
                 <div className="userShowBottom">
                   <span className="userShowTitle">Thông Tin</span>
                   <div className="userShowInfo">
-                    <PermIdentity className="userShowIcon" />
+                    <MonetizationOnIcon className="userShowIcon" />
                     <span className="userShowInfoTitle">{infoRestaurant.priceService},000 VND</span>
                   </div>
                   <div className="userShowInfo">
-                    <CalendarToday className="userShowIcon" />
+                    <FavoriteIcon className="userShowIcon" />
                     <span className="userShowInfoTitle">{infoRestaurant.likes}</span>
                   </div>
                   <span className="userShowTitle">Giới Thiệu</span>
                   <div className="userShowInfo mt-2">
                     <span className="userShowInfoTitle">{infoRestaurant.descriptionRestaurant}</span>
                   </div>
+                  <div className="d-flex">
+                  {infoRestaurant.imagesRestaurants.map((el)=>{
+                      return(
+                        <div className="userUpdateUpload mt-2">
+                        <img
+                            className="userUpdateImg"
+                            src={el.urlRestaurant}
+                            alt=""
+                          />
+                         
+                                
+                        </div>
+                      ) 
+                  })}
+
+                  </div>
                 </div>
               </div>
+
+
               <div className="userUpdate">
                 <span className="userUpdateTitle">Sữa Thông Tin</span>
                 <form className="userUpdateForm">
@@ -91,7 +99,9 @@ export default function EditRestaurantAdmin()
                       <label>Tên Nhà Hàng</label>
                       <input
                         type="text"
+                        name="nameRestaurant"
                         placeholder={infoRestaurant.nameRestaurant}
+                        value={editRestaurant.nameRestaurant}
                         className="userUpdateInput"
                       />
                     </div>
@@ -99,7 +109,9 @@ export default function EditRestaurantAdmin()
                       <label>Địa Chỉ</label>
                       <input
                         type="text"
+                              name="addressRestaurant"
                         placeholder={infoRestaurant.addressRestaurant}
+                        value={editRestaurant.addressRestaurant}
                         className="userUpdateInput"
                       />
                     </div>
@@ -108,13 +120,18 @@ export default function EditRestaurantAdmin()
                       <input
                         type="text"
                         placeholder={infoRestaurant.priceService}
+                        name="priceService"
+                        value={editRestaurant.priceService}
                         className="userUpdateInput"
                       />
                     </div>
                     <div className="userUpdateItem">
                       <label>Giới Thiệụ</label>
+                    
                       <textarea
-                        name="description"
+                        name="descriptionRestaurant"
+                        value={editRestaurant.descriptionRestaurant}
+
                       />
                     </div>
                   </div>

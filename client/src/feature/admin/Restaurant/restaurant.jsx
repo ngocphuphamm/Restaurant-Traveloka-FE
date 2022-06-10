@@ -98,12 +98,17 @@ export default function RestaurantAdmin() {
 
     return (
         <div className="productList">
+            <Link to={`/admin/restaurant/create`}>
+                <button className="btn btn-secondary">Tạo Nhà Hàng</button>
+            </Link>
+          
             <DataGrid
                 rows={dataRestaurant}
                 disableSelectionOnClick
                 columns={columns}
                 pageSize={8}
             />
+
         </div>
     );
 }
