@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { productRows } from "../../dummyData";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';export default function RestaurantAdmin() {
+import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';
+export default function RestaurantAdmin() {
     const [data, setData] = useState(productRows);
     const [dataRestaurant, setDataRestaurant] = useState([]);
     const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'))
@@ -42,7 +43,7 @@ import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';ex
 
         }
         getDataRestaurant()
-    }, [])
+    }, [infoLogin.sub])
     const handleDelete = (idRestaurant) => {
         setData(data.filter((item) => item.idRestaurant !== idRestaurant));
     };

@@ -1,7 +1,4 @@
 import "../../../assets/admin/newUser.css"
-import {
-  Publish,
-} from "@mui/icons-material";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 export default function CreateRestaurant() {

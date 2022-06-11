@@ -24,7 +24,7 @@ export default function EditImageRestaurant() {
         catch (err) {
 
         }
-    },[])
+    },[idImage])
     const handleChangeImage = async (e) => {
         const value = e.target.files[0];
        setImage(

@@ -21,6 +21,7 @@ import RestaurantAdmin from './feature/admin/Restaurant/restaurant';
 import EditRestaurantAdmin from './feature/admin/Restaurant/editRestaurant';
 import CreateRestaurant from './feature/admin/Restaurant/createRestaurant';
 import EditImageRestaurant from './feature/admin/Restaurant/editImageRestaurant';
+import MenuRestaurant from './feature/admin/menu/menu';
 function App() {
   
   const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
@@ -72,7 +73,13 @@ function App() {
             >
               
             </Route>
-			</Route>
+            <Route
+            path="restaurant/menu/:idRestaurant"
+            element={<MenuRestaurant/>}
+            >
+              
+            </Route>
+      </Route>
 
       </Routes>
     
