@@ -34,7 +34,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
           code : voucherCode,
           typeVoucher : "EATS",
           transactionId : idTS ,
-          amount : amount*1000
+          amount : amount
         }
         const infoUserLocal = JSON.parse(window.localStorage.getItem('accessToken'));
         let user_id = null;

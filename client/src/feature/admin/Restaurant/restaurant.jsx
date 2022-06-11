@@ -7,8 +7,7 @@ import { Link } from "react-router-dom";
 import { productRows } from "../../dummyData";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
-export default function RestaurantAdmin() {
+import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';export default function RestaurantAdmin() {
     const [data, setData] = useState(productRows);
     const [dataRestaurant, setDataRestaurant] = useState([]);
     const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'))
@@ -76,6 +75,21 @@ export default function RestaurantAdmin() {
             width: 100,
         },
         {
+            field: "actionMenu",
+            headerName: "Thực Đơn",
+            width: 100,
+            renderCell: (params) => {
+                return (
+                    <>
+                        <Link to={`/admin/restaurant/menu/${ params.row.idRestaurant}`}>
+                                <div className="ml-3"><RestaurantMenuSharpIcon/> </div> 
+                        </Link>
+                    </>
+                );
+            },
+        },
+
+        {
             field: "action",
             headerName: "Thao Tác",
             width: 150,
@@ -98,12 +112,17 @@ export default function RestaurantAdmin() {
 
     return (
         <div className="productList">
+            <Link to={`/admin/restaurant/create`}>
+                <button className="btn btn-warning mb-2 ">Tạo Nhà Hàng</button>
+            </Link>
+          
             <DataGrid
                 rows={dataRestaurant}
                 disableSelectionOnClick
                 columns={columns}
                 pageSize={8}
             />
+
         </div>
     );
 }
