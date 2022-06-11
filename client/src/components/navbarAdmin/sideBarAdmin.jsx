@@ -26,7 +26,7 @@
             <ul className="sidebarList">
               <Link to="/admin/restaurant" className="link">
                 <li className="sidebarListItem">
-                  {/* <PermIdentity className="sidebarIcon" /> */}
+           
                   Nhà Hàng
                 </li>
               </Link>
