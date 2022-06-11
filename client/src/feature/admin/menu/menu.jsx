@@ -36,9 +36,18 @@ export default function MenuRestaurant()
         }
         getMenu()
     },[] )
-    const handleDelete = async (idRestaurant) => {
+    const handleDelete = async (idFood) => {
       try{
-        // const {data} = await axios.delete
+        const {data} = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/menu/deleteFood/${idFood}`)
+        if(data.success === true)
+        {
+            alert("Xóa Thành Công!");
+            window.location.reload();
+        }
+        else
+        {
+            alert("Xóa Thất Bại!");
+        }
       }
       catch(err)
       {
