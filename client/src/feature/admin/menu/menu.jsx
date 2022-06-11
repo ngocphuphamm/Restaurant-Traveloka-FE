@@ -4,11 +4,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from "@mui/icons-material";
 
 import { Link } from "react-router-dom";
-import { productRows } from "../../dummyData";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';
 export default function MenuRestaurant()
 {
     const [data, setData] = useState();
@@ -24,7 +22,7 @@ export default function MenuRestaurant()
                         nameFood : el.nameFood,
                         idFood : el.idFood,
                         id : index,
-                        priceFood : el.priceFood + ",000 VND",
+                        priceFood : el.priceFood.toLocaleString() + ",000 VND",
                         urlImage : el.urlImage
                     }
                     await foodList.push(customData);
@@ -82,8 +80,8 @@ export default function MenuRestaurant()
 
     return (
         <div className="productList">
-            <Link to={`/admin/restaurant/create`}>
-                <button className="btn btn-warning mb-2 ">Tạo Nhà Hàng</button>
+            <Link to={`/admin/restaurant/menu/create/${idRestaurant}`}>
+                <button className="btn btn-warning mb-2 ">Tạo Thức Ăn</button>
             </Link>
           {data ? 
               <>     <DataGrid

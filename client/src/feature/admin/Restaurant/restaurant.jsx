@@ -29,7 +29,7 @@ export default function RestaurantAdmin() {
                         nameRestaurant: el.nameRestaurant,
                         addressRestaurant: el.addressRestaurant,
                         imagesRestaurants: el.imagesRestaurants[0].urlRestaurant,
-                        priceService: el.priceService,
+                        priceService: el.priceService.toLocaleString() + ",000 VND",
                         likes: el.likes,
 
                     }

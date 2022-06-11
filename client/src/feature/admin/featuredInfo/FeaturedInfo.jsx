@@ -49,12 +49,12 @@ export default function FeaturedInfo({dataStatistical}) {
           <div className="featuredMoneyContainer">
             <span className="featuredMoney">{dataStatistical.sumBill}</span>
           </div>
-          <span className="featuredSub">VND</span>
+          <span className="featuredSub">HÓA ĐƠN</span>
         </div>
         <div className="featuredItem">
           <span className="featuredTitle">Doanh Thu</span>
           <div className="featuredMoneyContainer">
-            <span className="featuredMoney">{dataStatistical.sumMoney}</span>
+            <span className="featuredMoney">{dataStatistical.sumMoney.toLocaleString()},000 VND</span>
           </div>
           <span className="featuredSub">VND</span>
         </div>
