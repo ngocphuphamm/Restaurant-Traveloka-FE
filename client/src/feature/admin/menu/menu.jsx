@@ -36,8 +36,14 @@ export default function MenuRestaurant()
         }
         getMenu()
     },[] )
-    const handleDelete = (idRestaurant) => {
-        setData(data.filter((item) => item.idRestaurant !== idRestaurant));
+    const handleDelete = async (idRestaurant) => {
+      try{
+        // const {data} = await axios.delete
+      }
+      catch(err)
+      {
+          console.log(err)
+      }
     };
 
     const columns = [

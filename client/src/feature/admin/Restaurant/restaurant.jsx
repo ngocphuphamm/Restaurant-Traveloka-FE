@@ -44,8 +44,25 @@ export default function RestaurantAdmin() {
         }
         getDataRestaurant()
     }, [infoLogin.sub])
-    const handleDelete = (idRestaurant) => {
-        setData(data.filter((item) => item.idRestaurant !== idRestaurant));
+    const handleDelete = async(idRestaurant) => {
+        try{
+               const {data} = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/deleteRestaurant/${idRestaurant}`);
+           
+               if(data.success === true)
+                {
+                    alert("Xóa Thành Công");
+                    window.location.reload();
+                }          
+                else
+                {
+                    alert("Xóa Thất Bại");
+                }
+        }
+
+        catch(err)
+        {
+            console.log(err)
+        }
     };
 
     const columns = [
@@ -102,7 +119,7 @@ export default function RestaurantAdmin() {
                         </Link>
                         <DeleteOutline
                             className="productListDelete"
-                            onClick={() => handleDelete(params.row.id)}
+                            onClick={() => handleDelete(params.row.idRestaurant)}
                         />
                     </>
                 );
