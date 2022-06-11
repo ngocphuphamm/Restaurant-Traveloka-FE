@@ -64,7 +64,7 @@ export default function MenuRestaurant()
             renderCell: (params) => {
                 return (
                     <>
-                        <Link to={`/admin/restaurant/edit/${ params.row.idFood}`}>
+                        <Link to={`/admin/restaurant/menu/edit/${ params.row.idFood}`}>
                             <button className="productListEdit">Sữa</button>
                         </Link>
                         <DeleteOutline

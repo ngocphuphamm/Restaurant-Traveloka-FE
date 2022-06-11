@@ -1,11 +1,11 @@
 import { useEffect,useState } from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios"
-export default function CreateMenu() {
+export default function CreateFood() {
     const{idRestaurant} =useParams();
     const [infoFood,setInfoFood] = useState({
         nameFood : "",
-        priceFood :""
+        priceFood : 0 
     })
     const [image,setImage] = useState(null);
     const handeChangeInfoFood = (e) =>{

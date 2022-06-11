@@ -14,13 +14,11 @@ export default function EditRestaurantAdmin() {
 
   const [infoRestaurant, setInfoRestaurant] = useState();
   const { idRestaurant } = useParams();
-  const location = useLocation();
   useEffect(() => {
     const getDetailRestaurant = async () => {
       try {
         const res = await restaurantApi.getRestaurant(idRestaurant);
         await setInfoRestaurant(res.data);
-        console.log(location.pathname)
        
       }
       catch (err) {
