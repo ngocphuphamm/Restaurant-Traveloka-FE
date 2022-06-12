@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import restaurantApi from "../../../api/restaurant";
 import { useParams } from "react-router-dom";
 
-import { useHistory ,useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import InfoRestaurant from "./infoRestaurant";
 import EditInfoRestaurant from "./editInfoRestaurant.jsx";
@@ -14,13 +14,11 @@ export default function EditRestaurantAdmin() {
 
   const [infoRestaurant, setInfoRestaurant] = useState();
   const { idRestaurant } = useParams();
-  const location = useLocation();
   useEffect(() => {
     const getDetailRestaurant = async () => {
       try {
         const res = await restaurantApi.getRestaurant(idRestaurant);
         await setInfoRestaurant(res.data);
-        console.log(location.pathname)
        
       }
       catch (err) {

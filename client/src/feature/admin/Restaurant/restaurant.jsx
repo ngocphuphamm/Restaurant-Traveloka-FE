@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { productRows } from "../../dummyData";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';export default function RestaurantAdmin() {
+import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';
+export default function RestaurantAdmin() {
     const [data, setData] = useState(productRows);
     const [dataRestaurant, setDataRestaurant] = useState([]);
     const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'))
@@ -28,7 +29,7 @@ import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';ex
                         nameRestaurant: el.nameRestaurant,
                         addressRestaurant: el.addressRestaurant,
                         imagesRestaurants: el.imagesRestaurants[0].urlRestaurant,
-                        priceService: el.priceService,
+                        priceService: el.priceService.toLocaleString() + ",000 VND",
                         likes: el.likes,
 
                     }
@@ -42,9 +43,26 @@ import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';ex
 
         }
         getDataRestaurant()
-    }, [])
-    const handleDelete = (idRestaurant) => {
-        setData(data.filter((item) => item.idRestaurant !== idRestaurant));
+    }, [infoLogin.sub])
+    const handleDelete = async(idRestaurant) => {
+        try{
+               const {data} = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/deleteRestaurant/${idRestaurant}`);
+           
+               if(data.success === true)
+                {
+                    alert("Xóa Thành Công");
+                    window.location.reload();
+                }          
+                else
+                {
+                    alert("Xóa Thất Bại");
+                }
+        }
+
+        catch(err)
+        {
+            console.log(err)
+        }
     };
 
     const columns = [
@@ -101,7 +119,7 @@ import RestaurantMenuSharpIcon from '@mui/icons-material/RestaurantMenuSharp';ex
                         </Link>
                         <DeleteOutline
                             className="productListDelete"
-                            onClick={() => handleDelete(params.row.id)}
+                            onClick={() => handleDelete(params.row.idRestaurant)}
                         />
                     </>
                 );
