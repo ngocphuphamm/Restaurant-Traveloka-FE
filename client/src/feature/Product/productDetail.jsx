@@ -4,70 +4,79 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
+import axios from "axios"
+import Select from 'react-select';
+const options = [
+  { value: '1', label: 'Sáng (6:00-15:00)' },
+  { value: '0', label: 'Tối (15:00-22:00)' }
+];
 const ProductDetails = () => {
+  const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const today = new Date();
   const [listrender, setlistrender] = useState([]);
   const [date, setDate] = useState(today.toLocaleDateString("en-CA"));
-  const [bookingSession, setBookingSession] = useState(  );
-  const [name, setName] = useState("");
-  const [tel, setTel] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [name, setName] = useState(infoUser ? infoUser.name : "");
+  const [tel, setTel] = useState("");
   const { id } = useParams();
+  const [numberSlot, setSlot] = useState(0);
+
 
   useEffect(() => {
     const getdatarestaurant = async () => {
       try {
         const a = await restaurantApi.getRestaurant(`${id}`);
         setlistrender(a.data);
+
       } catch (error) {
         alert(error);
       }
     };
-  
+
     getdatarestaurant();
   }, [id]);
 
-
-
-
+  
   const addReservations = async () => {
-     
+
     const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
-   
-     const res = await restaurantApi.postBookRestaurant({
+    if (selectedOption === null || name === " " || tel === "" || tel.length < 10) {
+      alert("Vui Lòng Nhập Thông Tin Đầy Đủ");
+    }
+    else {
+      const res = await restaurantApi.postBookRestaurant({
         idRestaurant: id,
         dateBook: date,
         idCustomer: infoUser ? infoUser.sub : null,
-        bookingSession: bookingSession,
+        bookingSession: Number(selectedOption.value),
         nameBook: name,
         phoneBook: tel,
       })
-      console.log(res.data.success);
-      if(res.data.success === false)
-      {
-     
-        alert("Chỗ Đã Đầy ! .Vui Lòng Quý Khách Chọn Khung Giờ Khác . 😢 ")
-        setBookingSession("");
-        setDate(date);
-        setName("");
-        setTel("");
+      if (res.data.success === false) {
+
+        alert("Chỗ Đã Đầy ! .Vui Lòng Quý Khách Chọn Khung Giờ Khác . 😢 ");
+        window.location.reload();
       }
-      else
-      {
-   
+      else {
+
         alert("Chúc Mừng Quý Khách Đặt Chỗ Thành Công ! 🔥 ")
-        setBookingSession("");
+        setSelectedOption(null);
         setDate(date);
-        setName("");
+        setName(infoUser ? infoUser.name : "");
         setTel("");
+
       }
-            
-    };
+    }
+
+  };
 
   useEffect(() => {
+
     if (Date.parse(date) + 100000000 < today.getTime()) {
       alert("Vui lòng chọn lại ngày");
+      window.location.reload();
     }
   }, [date, today]);
 
@@ -145,18 +154,15 @@ const ProductDetails = () => {
                     onChange={(e) => setDate(e.target.value)}
                   ></input>
 
-                  <select
-                    className ="form-select mt-2 inputdate mt-4 col-md-12"
-                    aria-label="Default select example"
-                    onChange={(e)=>{
-                        setBookingSession(e.target.value)
-                    }}
-                  >
-                    <option selected>Vui Lòng Chọn Buổi</option>
-                    <option value="true">Sáng (6:00-15:00)</option>
-                    <option value="false">Tối (15:00-22:00)</option>
-                  </select>
-
+                  <div style={{width: '300px'}} className ="form-select mt-2 inputdate mt-4 col-md-12"   >
+                   <Select
+                   
+                   defaultValue={selectedOption}
+                    onChange={setSelectedOption}
+                    options={options}
+                  />
+                  </div>
+             
                   <input
                     className="inputdate mt-4 col-md-12"
                     placeholder="Họ và tên"
@@ -170,19 +176,20 @@ const ProductDetails = () => {
                     className="inputdate mt-4 col-md-12"
                     placeholder="Nhập số điện thoại"
                     value={tel}
-                    onChange={(e) => (e.target.value).length <= 10  ? setTel(e.target.value) : alert("VUI LÒNG NHẬP ĐÚNG SỐ ĐIÊN THOẠI 🤥 ")}
+                    onChange={(e) => (e.target.value).length <= 10 ? setTel(e.target.value) : alert("VUI LÒNG NHẬP ĐÚNG SỐ ĐIÊN THOẠI 🤥 ")}
                   ></input>
+                  <div className="mt-3">
+                    <span className="mt-2">Số Chỗ : {numberSlot} </span>
+                  </div>
 
                   <button
-                    className="btn btn-outline-dark flex-shrink-0 col-md-12 mt-5"
+                    className="btn btn-outline-dark flex-shrink-0 col-md-12 mt-3"
                     type="button"
                     onClick={addReservations}
                   >
                     <i className="bi-cart-fill me-1"></i>
                     Đặt chỗ
                   </button>
-
-                  {/* {renderRestaurant()} */}
                 </div>
               </div>
             </div>

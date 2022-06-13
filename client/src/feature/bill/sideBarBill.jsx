@@ -23,7 +23,7 @@ function SideBarBill({cart,idRestaurant})
                 headers: {
                     // user_id: user_id,
                     // partner_id: idStaff,
-                     user_id: "ngocphu",
+                    user_id: "ngocphu",
                     partner_id: "082BE41E-5C2E-4A7E-BD55-0D73F8422654",
                 },
             })

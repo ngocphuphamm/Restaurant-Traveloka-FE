@@ -27,21 +27,21 @@
               <Link to="/admin/restaurant" className="link">
                 <li className="sidebarListItem">
            
-                  Nhà Hàng
+                Nhà Hàng Và Thực Đơn
                 </li>
               </Link>
-              <Link to="/admin/menurestaurant" className="link">
-                <li className="sidebarListItem">
-                  {/* <Storefront className="sidebarIcon" /> */}
-                  Menu Nhà Hàng
-                </li>
-              </Link>
-              <Link to="/admin/bill" className="link">
+            <Link to="/admin/bill" className="link">
               <li className="sidebarListItem">
-                {/* <AttachMoney className="sidebarIcon" /> */}
+          
                 Hóa Đơn
               </li>
               </Link>
+              <Link to="/admin/bill" className="link">
+              <li className="sidebarListItem">
+              Lịch Đặt           
+               </li>
+              </Link>
+            
             
             </ul>
           </div>
