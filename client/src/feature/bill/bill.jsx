@@ -29,12 +29,13 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
   
       if(voucherCode !== "")
       {
+        // ap dung voucher
         const idTS = uuidv4();
         let bodyVoucherApply = {
           code : voucherCode,
           typeVoucher : "EATS",
           transactionId : idTS ,
-          amount : amount
+          amount : amount*1000
         }
         const infoUserLocal = JSON.parse(window.localStorage.getItem('accessToken'));
         let user_id = null;
@@ -56,7 +57,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
             idStaff,
             orderIdVoucher : `${resVoucher.data.data.orderId}`,
             transactionIdVoucher : idTS,
-            amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+            amountBill : amountSale ? (amountSale + 50*1000).toLocaleString()  : (amount*1000 + 50*1000).toLocaleString()   
           }
           window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
           navigate("/bill/payment")
@@ -74,7 +75,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
         let customData =  {
           infoUser,
           idStaff,
-          amountBill : amountSale ? (amountSale + 50) : (amount + 50)        
+          amountBill : amountSale ? (amountSale + 50*1000).toLocaleString()  : (amount*1000 + 50*1000).toLocaleString()         
         }
         window.localStorage.setItem('infoUserBook', JSON.stringify(customData));
         navigate("/bill/payment")
@@ -114,13 +115,22 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
   useEffect(() => {
     const infoUserLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
     if (infoUserLocal) {
-      setInfoUser((infoUser) => ({
-        ...infoUser,
-        nameBook: infoUserLocal.infoUser.nameBook,
-        emailBook: infoUserLocal.infoUser.emailBook,
-        phoneBook: infoUserLocal.infoUser.phoneBook,
-        addressBook: infoUserLocal.infoUser.addressBook
-      }))
+      if(infoUserLocal.orderIdVoucher)
+      {
+          alert("BẠN ĐANG CÓ MỘT THANH TOÁN TRƯỚC ĐÓ !");
+          navigate("/bill/payment")
+      }
+      else
+      {
+        setInfoUser((infoUser) => ({
+          ...infoUser,
+          nameBook: infoUserLocal.infoUser.nameBook,
+          emailBook: infoUserLocal.infoUser.emailBook,
+          phoneBook: infoUserLocal.infoUser.phoneBook,
+          addressBook: infoUserLocal.infoUser.addressBook
+        }))
+      }
+    
 
     }
   }, [])
@@ -191,10 +201,10 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
       if(infoUser)
       {
         user_id =  infoUser.sub;
-      }
+      }      
 
       await axios
-        .get(`${process.env.REACT_APP_CHECKVOUCHER}?amount=${amount}&code=${newCode}&typeVoucher=eats`, {
+        .get(`${process.env.REACT_APP_CHECKVOUCHER}?amount=${amount*1000}&code=${newCode}&typeVoucher=eats`, {
           headers: {
             user_id: user_id,
             partner_id: idStaff,
@@ -203,15 +213,17 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
         })
         .then(function (response) {
 
-          setAmountSale(response.data.data.amount);
+          setAmountSale((amount*1000)-response.data.data.amount);
 
         })
         .catch(function (error) {
           alert("SỐ TIỀN MUA KHÔNG ĐỦ ÁP DỤNG VOUCHER");
+
         });
     }
     else {
-      await setAmountSale(amount);
+      await setAmountSale(amount*1000);
+   
     }
 
   }
@@ -259,7 +271,8 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
             </div>
             <ul className="checkout-breadcrumb checkout-item">
               <li className="breadcrumb-item">
-                <a href="/cart.html" className="text-link cart">
+                
+                <a href="/cart" className="text-link cart">
                   Giỏ hàng{" "}
                 </a>
                 <i className="icon-link bx bx-chevron-right"></i>
@@ -367,7 +380,7 @@ const Bill = ({ cart, idRestaurant,numberCart }) => {
               </div>
               <div className="payment-total total">
                 <div className="total-text">Tổng cộng:</div>
-                <div className="total-text total-money">{amountSale ? (amountSale + 50).toLocaleString() + ",000 VND" : (amount + 50).toLocaleString() + ",000 VND"}</div>
+                <div className="total-text total-money">{amountSale ? (amountSale + 50*1000).toLocaleString() + "VND" : (amount*1000 + 50*1000).toLocaleString() + "VND"}</div>
               </div>
             </div>
           </div>

@@ -23,7 +23,9 @@ function PageStripe({ cart,DeleteAllCart }) {
     useEffect(() => {
         const getClientSecret = async () => {
             if (infoUserLocal) {
-                const resData = await axios.post(`${process.env.REACT_APP_API_URL}/bill/paymentStripe`, { "amount": infoUserLocal.amountBill })
+                const amount = await Number(infoUserLocal.amountBill.slice(0,3));
+         
+                const resData = await axios.post(`${process.env.REACT_APP_API_URL}/bill/paymentStripe`, { "amount": amount*100 })
                 await setClientSecret(resData.data);
     
             }
