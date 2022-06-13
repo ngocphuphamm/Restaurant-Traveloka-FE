@@ -30,17 +30,7 @@
                 Nhà Hàng Và Thực Đơn
                 </li>
               </Link>
-            <Link to="/admin/bill" className="link">
-              <li className="sidebarListItem">
-          
-                Hóa Đơn
-              </li>
-              </Link>
-              <Link to="/admin/bill" className="link">
-              <li className="sidebarListItem">
-              Lịch Đặt           
-               </li>
-              </Link>
+         
             
             
             </ul>
