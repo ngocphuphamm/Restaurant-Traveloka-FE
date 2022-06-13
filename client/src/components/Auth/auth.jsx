@@ -7,10 +7,13 @@ function Auth(){
       const local = JSON.parse(localStorage.getItem("accessToken"));
     
       if (local) {
+      
         return (
           <>
+            
             <span
               onClick={async () => {
+                window.history.pushState(null, "", "/");
                 await window.location.replace(`${process.env.REACT_APP_PROFILE}profile/view`);
               }}
             >
@@ -43,7 +46,10 @@ function Auth(){
                 Đăng Xuất
               </button>
             </li>
+          
           </>
+
+     
         );
       }
       if (urlRedirect) {

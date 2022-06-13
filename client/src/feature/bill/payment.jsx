@@ -7,6 +7,7 @@ import axios from "axios";
 const Payment = ({ cart, numberCart, DeleteAllCart }) => {
   const navigate = useNavigate();
   const [idStaff, setIdStaff] = useState('');
+  const [nameRestaurant, setNameRestaurant] = useState('')
   const radio = [
     {
       payment: "PM02",
@@ -35,13 +36,14 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
 
       const res = await restaurantApi.getRestaurant(`${cart.idRestaurant}`);
       await setIdStaff(res.data.idStaff)
+      await setNameRestaurant(res.data.nameRestaurant)
     }
     if (!info) {
       navigate("/bill");
     }
     setInfoUserBook(info);
     fetchRestaurant();
-  }, [navigate,cart.idRestaurant])
+  }, [navigate, cart.idRestaurant])
 
   const renderFood = (foods = cart.Carts) => {
     return foods.map((el, key) => {
@@ -99,6 +101,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
             idCustomer: infoLogin.sub,
             detailTransaction
           }
+
           const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
 
           if (res.data.success === true) {
@@ -118,6 +121,33 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
                 app_id: "vy01",
               },
             })
+
+            // // vinh phan 
+            const customDataProfile = {
+
+              reward: 1,
+              details: [
+                {
+
+                  link: `${process.env.REACT_APP_FRONTEND}restaurant/${cart.idRestaurant}`,
+                  productName: `Hóa Đơn Thanh Toán ${nameRestaurant}`,
+                  quantity: 1,
+                  thumbnail: `https://console.kr-asia.com/wp-content/uploads/2021/03/Traveloka-1.png`,
+                  partnerId: `${idStaff}`,
+                  price: Number(infoUserBook.amountBill.slice(0, 3)) * 1000,
+                },
+              ],
+
+              userId: `${infoUser.sub}`,
+              partnerId: `${idStaff}`,
+            };
+            await axios.post(
+              `${process.env.REACT_APP_PROFILE}api/orders`,
+              customDataProfile, {
+              headers: {
+                service_code: "EATS"
+              },
+            });
             window.localStorage.removeItem('infoUserBook');
 
             DeleteAllCart()
@@ -139,6 +169,32 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
             idCustomer: infoLogin.sub,
             detailTransaction
           }
+          const customDataProfile = {
+
+            reward: 1,
+            details: [
+              {
+
+                link: `${process.env.REACT_APP_FRONTEND}restaurant/${cart.idRestaurant}`,
+                productName: `Hóa Đơn Thanh Toán ${nameRestaurant}`,
+                quantity: 1,
+                thumbnail: `https://console.kr-asia.com/wp-content/uploads/2021/03/Traveloka-1.png`,
+                partnerId: `${idStaff}`,
+                price: Number(infoUserBook.amountBill.slice(0, 3)) * 1000,
+              },
+            ],
+
+            userId: `${infoLogin.sub}`,
+            partnerId: `${idStaff}`,
+          };
+          await axios.post(
+            `${process.env.REACT_APP_PROFILE}api/orders`,
+            customDataProfile, {
+            headers: {
+              service_code: "EATS"
+            },
+          });
+
           const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
           if (res.data.success === true) {
 
@@ -233,7 +289,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
               </div>
               <ul className="checkout-breadcrumb checkout-item">
                 <li className="breadcrumb-item">
-                  <a href="/cart.html" className="text-link cart">
+                  <a href="/cart" className="text-link cart">
                     Giỏ hàng{" "}
                   </a>
                   <i className="icon-link bx bx-chevron-right"></i>
@@ -293,7 +349,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
                 <div className="pay form-item">
 
                   <button className="btn btn-secondary" onClick={handleBackBill}>
-                    Quay lại thông tin giao hàng
+                    Quay Lại Và Hủy Mã Voucher
                   </button>
 
                   <button type="butinfoUserBook.amountBill.toLocaleString()},000 VNDton" className="btn btn-info" onClick={handePayment}>
@@ -313,7 +369,7 @@ const Payment = ({ cart, numberCart, DeleteAllCart }) => {
                 <div className="payment-total total">
                   <div className="total-text">
                     <h6>Tổng cộng:</h6></div>
-                  <div className="total-text total-money"><h6>{infoUserBook.amountBill.toLocaleString()},000 VND</h6></div>
+                  <div className="total-text total-money"><h6>{infoUserBook.amountBill.toLocaleString()} VND</h6></div>
                 </div>
               </div>
             </div>

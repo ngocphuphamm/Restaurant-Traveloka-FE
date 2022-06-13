@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import Search from './search';
 import Auth from "../Auth/auth";
 import "../../assets/css/home.css";
-
+import { useEffect } from "react";
 export default function NavbarApp() {
   const infoLogin = JSON.parse(window.localStorage.getItem('accessToken'));
+
   return (
     <div>
       <nav
@@ -18,7 +19,7 @@ export default function NavbarApp() {
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
              {
-               infoLogin?infoLogin.type === "PARTNER" ? 
+               infoLogin?infoLogin.type = "PARTNER" ? 
                <Link to="/admin/dashboard/R01">
                       <li className="nav-item">
                 <span className="nav-link">

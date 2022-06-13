@@ -17,9 +17,22 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
     voucherCode: "",
     payment: ""
   })
+  const [nameRestaurant,setNameRestaurant] = useState();
 
   const infoUserBookLocal = JSON.parse(window.localStorage.getItem('infoUserBook'));
+  
+  useEffect(() => {
+    const getdatarestaurant = async () => {
+      try {
+        const a = await restaurantApi.getRestaurant(`${idRestaurant}`);
+        setNameRestaurant(a.data.nameRestaurant);
+      } catch (error) {
+        alert(error);
+      }
+    };
 
+    getdatarestaurant();
+  }, [idRestaurant]);
   useEffect(() => {
     const fetchRestaurant = async () => {
 
@@ -31,7 +44,7 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
     }
     fetchRestaurant();
     setInfoUserBook(infoUserBookLocal);
-  }, [idStaff,infoUserBookLocal,navigate,idRestaurant])
+  }, [idStaff])
 
 
   const postBill = async () => {
@@ -63,8 +76,9 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
           detailTransaction
         }
         try{
-          await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
 
+          await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
+          
     
           const infoUser = JSON.parse(window.localStorage.getItem('accessToken'));
           let user_id = infoUser.sub;
@@ -81,6 +95,32 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
               app_id: "vy01",
             },
           })
+
+          const customDataProfile = {
+
+            reward: 1,
+            details: [
+              {
+
+                link: `${process.env.REACT_APP_FRONTEND}restaurant/${idRestaurant}`,
+                productName: `Hóa Đơn Thanh Toán ${nameRestaurant}`,
+                quantity: 1,
+                thumbnail: `https://console.kr-asia.com/wp-content/uploads/2021/03/Traveloka-1.png`,
+                partnerId: `${idStaff}`,
+                price: Number(infoUserBook.amountBill.slice(0, 3)) * 1000,
+              },
+            ],
+
+            userId: `${infoLogin.sub}`,
+            partnerId: `${idStaff}`,
+          };
+          await axios.post(
+            `${process.env.REACT_APP_PROFILE}api/orders`,
+            customDataProfile, {
+            headers: {
+              service_code: "EATS"
+            },
+          });
           DeleteAllCart()
           window.localStorage.removeItem('infoUserBook');
        
@@ -108,7 +148,31 @@ const CheckoutForm = ({ idRestaurant, carts, idMenu, numberCart, DeleteAllCart }
         }
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/bill`, customData);
         if (res.data.success === true) {
+          const customDataProfile = {
 
+            reward: 1,
+            details: [
+              {
+
+                link: `${process.env.REACT_APP_FRONTEND}restaurant/${idRestaurant}`,
+                productName: `Hóa Đơn Thanh Toán ${nameRestaurant}`,
+                quantity: 1,
+                thumbnail: `https://console.kr-asia.com/wp-content/uploads/2021/03/Traveloka-1.png`,
+                partnerId: `${idStaff}`,
+                price: Number(infoUserBook.amountBill.slice(0, 3)) * 1000,
+              },
+            ],
+
+            userId: `${infoLogin.sub}`,
+            partnerId: `${idStaff}`,
+          };
+          await axios.post(
+            `${process.env.REACT_APP_PROFILE}api/orders`,
+            customDataProfile, {
+            headers: {
+              service_code: "EATS"
+            },
+          });
           DeleteAllCart()
           window.localStorage.removeItem('infoUserBook');
        
