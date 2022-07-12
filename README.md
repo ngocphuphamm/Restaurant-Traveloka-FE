@@ -1,6 +1,6 @@
 # Restaurant-Traveloka-FE
--Tech : REACTJS 
--Connect microservice : Voucher , Profile
+- Tech : REACTJS 
+- Connect microservice : Voucher , Profile
 ---
 # USE CASE 
 ![282345428_351798843732814_116230916368426275_n](https://user-images.githubusercontent.com/87811387/178396620-e62ecd1e-a279-4820-a35a-5785be762bc5.png)
